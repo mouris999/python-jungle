@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VaultPay â€” Secure Gateway</title>
+<title>VaultPay — Secure Gateway</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -20,7 +20,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .screen{display:none;min-height:100vh;position:relative;z-index:1}
 .screen.active{display:flex;flex-direction:column}
 
-/* â”€â”€ HEADER â”€â”€ */
+/* ── HEADER ── */
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--border)}
 .logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;letter-spacing:.06em;color:var(--gold)}
 .logo span{color:var(--text);font-weight:300}
@@ -28,7 +28,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hdr-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* â”€â”€ PLANS â”€â”€ */
+/* ── PLANS ── */
 .plans-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:56px 20px}
 .plans-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,60px);font-weight:300;text-align:center;line-height:1.1;margin-bottom:10px}
 .plans-hl em{font-style:italic;color:var(--gold)}
@@ -48,11 +48,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .access-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:2px}
 .plan-feats{list-style:none;margin-bottom:28px}
 .plan-feats li{font-size:11px;color:var(--dim);padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
-.plan-feats li::before{content:'â€”';color:var(--gold);flex-shrink:0}
+.plan-feats li::before{content:'—';color:var(--gold);flex-shrink:0}
 .btn-plan{width:100%;padding:13px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-plan:hover,.plan.featured .btn-plan{background:var(--gold);color:var(--bg)}
 
-/* â”€â”€ PAYMENT â”€â”€ */
+/* ── PAYMENT ── */
 .pay-wrap{flex:1;display:flex;justify-content:center;padding:36px 20px}
 .pay-box{background:var(--surf);border:1px solid var(--border);border-radius:3px;max-width:500px;width:100%;overflow:hidden}
 .pay-hdr{padding:22px 26px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -94,7 +94,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-back{background:transparent;border:none;color:var(--dim);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:.1em;padding:6px 0;display:flex;align-items:center;gap:8px;transition:color .2s}
 .btn-back:hover{color:var(--gold)}
 
-/* â”€â”€ PENDING â”€â”€ */
+/* ── PENDING ── */
 .pend-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
 .pend-spin{font-size:56px;animation:spin 4s linear infinite;display:inline-block;margin-bottom:22px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -104,7 +104,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .pend-row:last-child{border-bottom:none}
 .pend-row span:first-child{color:var(--dim)}
 
-/* â”€â”€ SUCCESS â”€â”€ */
+/* ── SUCCESS ── */
 .suc-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
 .suc-ring{width:72px;height:72px;border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:20px;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
@@ -120,7 +120,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .token-lbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .token-val{font-size:9px;color:var(--dim);word-break:break-all;line-height:1.8;letter-spacing:.02em}
 
-/* â”€â”€ ADMIN â”€â”€ */
+/* ── ADMIN ── */
 .admin-wrap{flex:1;padding:40px 20px;max-width:680px;margin:0 auto;width:100%}
 .admin-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--red);margin-bottom:6px}
 .admin-sub{font-size:9px;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:28px}
@@ -140,19 +140,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .field-select{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:13px 14px;outline:none;border-radius:3px;cursor:pointer}
 .field-select:focus{border-color:var(--gold)}
 
-/* â”€â”€ CHECK SCREEN â”€â”€ */
+/* ── CHECK SCREEN ── */
 .check-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
 .check-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:24px}
 .check-inner{max-width:460px;width:100%}
 textarea.field-input{resize:none;height:80px;line-height:1.5}
 
-/* â”€â”€ TOAST â”€â”€ */
+/* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--surf);border:1px solid var(--border);border-radius:3px;padding:12px 18px;font-size:11px;transform:translateY(100px);opacity:0;transition:all .3s ease;z-index:9999;max-width:300px}
 .toast.ok{border-color:rgba(46,204,113,.4);color:var(--green)}
 .toast.err{border-color:rgba(231,76,60,.4);color:var(--red)}
 .toast.show{transform:translateY(0);opacity:1}
 
-/* â”€â”€ MISC â”€â”€ */
+/* ── MISC ── */
 input,button,select,textarea{-webkit-appearance:none;appearance:none}
 a{text-decoration:none}
 @media(max-width:600px){
@@ -172,14 +172,14 @@ a{text-decoration:none}
 <div class="screen active" id="screen-plans">
   <div class="hdr">
     <div class="logo">Vault<span>Pay</span></div>
-    <div class="hdr-badge"><div class="hdr-badge-dot"></div>AES-256 Â· SECURE GATEWAY</div>
+    <div class="hdr-badge"><div class="hdr-badge-dot"></div>AES-256 · SECURE GATEWAY</div>
   </div>
   <div class="plans-wrap">
     <h1 class="plans-hl">Choose Your <em>Access Level</em></h1>
-    <p class="plans-sub">Instant activation &nbsp;Â·&nbsp; Encrypted token &nbsp;Â·&nbsp; 30-day validity</p>
+    <p class="plans-sub">Instant activation &nbsp;·&nbsp; Encrypted token &nbsp;·&nbsp; 30-day validity</p>
     <div class="plans-grid" id="plans-grid"></div>
     <p style="margin-top:32px;font-size:10px;color:var(--dim2);letter-spacing:.08em">
-      Already subscribed? &nbsp;<span style="color:var(--gold);cursor:pointer" onclick="goCheck()">Check your subscription â†’</span>
+      Already subscribed? &nbsp;<span style="color:var(--gold);cursor:pointer" onclick="goCheck()">Check your subscription →</span>
     </p>
   </div>
 </div>
@@ -193,12 +193,12 @@ a{text-decoration:none}
   <div class="pay-wrap">
     <div class="pay-box">
       <div class="pay-hdr">
-        <button class="btn-back" onclick="goPlans()">â† Back</button>
+        <button class="btn-back" onclick="goPlans()">← Back</button>
         <div class="pay-title">Complete Payment</div>
-        <div class="pay-amt" id="pay-amt">â‚¹0</div>
+        <div class="pay-amt" id="pay-amt">₹0</div>
       </div>
       <div class="pay-body">
-        <div class="step-lbl">Step 1 â€” Scan QR or open UPI app</div>
+        <div class="step-lbl">Step 1 — Scan QR or open UPI app</div>
         <div class="qr-wrap"><div class="qr-frame" id="qr-box"></div></div>
         <div class="upi-row">
           <span id="upi-show">loading...</span>
@@ -210,20 +210,20 @@ a{text-decoration:none}
         </div>
         <div class="divider">OR PAY VIA APP</div>
         <div class="upi-apps">
-          <a class="upi-app" id="lnk-gpay" href="#"><div class="app-ico">ðŸ“±</div>GPay</a>
-          <a class="upi-app" id="lnk-phonepe" href="#"><div class="app-ico">ðŸ’œ</div>PhonePe</a>
-          <a class="upi-app" id="lnk-paytm" href="#"><div class="app-ico">ðŸ”µ</div>Paytm</a>
-          <a class="upi-app" id="lnk-bhim" href="#"><div class="app-ico">ðŸ‡®ðŸ‡³</div>BHIM</a>
-          <a class="upi-app" id="lnk-mobikwik" href="#"><div class="app-ico">ðŸŸ£</div>MobiKwik</a>
+          <a class="upi-app" id="lnk-gpay" href="#"><div class="app-ico">📱</div>GPay</a>
+          <a class="upi-app" id="lnk-phonepe" href="#"><div class="app-ico">💜</div>PhonePe</a>
+          <a class="upi-app" id="lnk-paytm" href="#"><div class="app-ico">🔵</div>Paytm</a>
+          <a class="upi-app" id="lnk-bhim" href="#"><div class="app-ico">🇮🇳</div>BHIM</a>
+          <a class="upi-app" id="lnk-mobikwik" href="#"><div class="app-ico">🟣</div>MobiKwik</a>
         </div>
-        <div class="step-lbl">Step 2 â€” Enter your UTR / Reference number</div>
+        <div class="step-lbl">Step 2 — Enter your UTR / Reference number</div>
         <div class="field-lbl">Transaction reference (from bank SMS / app)</div>
         <input type="text" class="field-input" id="utr-in" placeholder="e.g. 425612345678" maxlength="64" autocomplete="off">
         <div class="rate-warn" id="rate-warn">Too many attempts. Please wait before retrying.</div>
         <button class="btn-main" id="btn-verify" onclick="submitPay()">VERIFY &amp; ACTIVATE SUBSCRIPTION</button>
         <div class="info-box">
-          <span class="info-box-ico">âœ“</span>
-          <span>Secured by AES-256-GCM encryption. Your transaction reference is cryptographically verified. Never share your bank OTP with anyone. Gateway runs entirely in your browser â€” no third-party servers.</span>
+          <span class="info-box-ico">✓</span>
+          <span>Secured by AES-256-GCM encryption. Your transaction reference is cryptographically verified. Never share your bank OTP with anyone. Gateway runs entirely in your browser — no third-party servers.</span>
         </div>
       </div>
     </div>
@@ -237,17 +237,17 @@ a{text-decoration:none}
     <div class="hdr-badge"><div class="hdr-badge-dot" style="background:var(--blue)"></div>VERIFYING PAYMENT</div>
   </div>
   <div class="pend-wrap">
-    <div class="pend-spin">â³</div>
+    <div class="pend-spin">⏳</div>
     <div class="pend-title">Awaiting Verification</div>
     <p style="font-size:11px;color:var(--dim);line-height:1.9;max-width:380px;margin-bottom:4px">
-      Payment submitted. Verification takes <strong style="color:var(--gold)">1â€“5 minutes</strong>.<br>
-      Keep this page open â€” you'll be notified automatically.
+      Payment submitted. Verification takes <strong style="color:var(--gold)">1–5 minutes</strong>.<br>
+      Keep this page open — you'll be notified automatically.
     </p>
     <div class="pend-card">
       <div class="field-lbl" style="margin-bottom:10px">Reference Details</div>
-      <div class="pend-row"><span>UTR / Ref</span><span id="p-utr">â€”</span></div>
-      <div class="pend-row"><span>Plan</span><span id="p-plan">â€”</span></div>
-      <div class="pend-row"><span>Amount</span><span id="p-amt" style="color:var(--gold)">â€”</span></div>
+      <div class="pend-row"><span>UTR / Ref</span><span id="p-utr">—</span></div>
+      <div class="pend-row"><span>Plan</span><span id="p-plan">—</span></div>
+      <div class="pend-row"><span>Amount</span><span id="p-amt" style="color:var(--gold)">—</span></div>
       <div class="pend-row"><span>Status</span><span id="p-status" style="color:var(--blue)">Pending</span></div>
     </div>
     <button class="btn-main" style="max-width:260px" onclick="checkPending()">CHECK STATUS NOW</button>
@@ -262,25 +262,25 @@ a{text-decoration:none}
     <div class="hdr-badge"><div class="hdr-badge-dot"></div>SUBSCRIPTION ACTIVE</div>
   </div>
   <div class="suc-wrap">
-    <div class="suc-ring">âœ“</div>
+    <div class="suc-ring">✓</div>
     <div class="suc-title">Subscription Activated</div>
     <p style="font-size:11px;color:var(--dim);margin-bottom:4px;letter-spacing:.04em">Your access is unlocked and cryptographically secured</p>
     <div class="suc-dashboard">
       <div style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">ACCESS LEVEL</div>
       <div class="suc-access" id="suc-pct">0%</div>
       <div class="prog-bg"><div class="prog-fill" id="suc-prog" style="width:0%"></div></div>
-      <div class="suc-row"><span>Plan</span><span id="suc-plan">â€”</span></div>
-      <div class="suc-row"><span>Valid Until</span><span id="suc-expiry">â€”</span></div>
-      <div class="suc-row"><span>Token ID</span><span id="suc-tid" style="color:var(--dim);font-size:10px">â€”</span></div>
+      <div class="suc-row"><span>Plan</span><span id="suc-plan">—</span></div>
+      <div class="suc-row"><span>Valid Until</span><span id="suc-expiry">—</span></div>
+      <div class="suc-row"><span>Token ID</span><span id="suc-tid" style="color:var(--dim);font-size:10px">—</span></div>
     </div>
     <div class="token-box">
-      <div class="token-lbl">Encrypted Subscription Token â€” Save this securely</div>
+      <div class="token-lbl">Encrypted Subscription Token — Save this securely</div>
       <div class="token-val" id="token-val"></div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
       <button class="btn-main" style="max-width:200px" onclick="cpyToken()">COPY TOKEN</button>
-      <button class="btn-back" onclick="goPlans()" style="margin:0;padding:0 10px">â† Back to plans</button>
-      <button class="btn-main" id="btn-return" style="max-width:200px;background:var(--green);color:#fff" onclick="goBack()">â† RETURN TO APP</button>
+      <button class="btn-back" onclick="goPlans()" style="margin:0;padding:0 10px">← Back to plans</button>
+      <button class="btn-main" id="btn-return" style="max-width:200px;background:var(--green);color:#fff" onclick="goBack()">← RETURN TO APP</button>
     </div>
   </div>
 </div>
@@ -299,7 +299,7 @@ a{text-decoration:none}
       <button class="btn-main" style="margin-bottom:14px" onclick="doCheck()">VERIFY TOKEN</button>
       <div id="chk-result"></div>
       <div style="text-align:center;margin-top:24px">
-        <button class="btn-back" onclick="goPlans()">â† Back to plans</button>
+        <button class="btn-back" onclick="goPlans()">← Back to plans</button>
       </div>
     </div>
   </div>
@@ -309,7 +309,7 @@ a{text-decoration:none}
 <div class="screen" id="screen-admin">
   <div class="hdr">
     <div class="logo">Vault<span>Pay</span></div>
-    <div class="hdr-badge" style="color:var(--red)">âš  ADMIN PANEL</div>
+    <div class="hdr-badge" style="color:var(--red)">⚠ ADMIN PANEL</div>
   </div>
   <div class="admin-wrap">
     <div id="admin-wall">
@@ -326,16 +326,16 @@ a{text-decoration:none}
       <div class="admin-section">
         <div class="admin-section-title">Pending Verifications</div>
         <div id="admin-pend-list"></div>
-        <button class="btn-back" onclick="loadAdminPending()" style="margin-top:8px">â†» Refresh list</button>
+        <button class="btn-back" onclick="loadAdminPending()" style="margin-top:8px">↻ Refresh list</button>
       </div>
       <div class="admin-section">
         <div class="admin-section-title">Issue Token Manually</div>
         <div class="admin-grid">
           <input type="text" class="field-input" id="adm-txn" placeholder="Transaction reference / UTR" style="margin:0">
           <select class="field-select" id="adm-plan">
-            <option value="99">â‚¹99 â€” Starter (30% access)</option>
-            <option value="299">â‚¹299 â€” Pro (60% access)</option>
-            <option value="499">â‚¹499 â€” Elite (100% access)</option>
+            <option value="99">₹99 — Starter (30% access)</option>
+            <option value="299">₹299 — Pro (60% access)</option>
+            <option value="499">₹499 — Elite (100% access)</option>
           </select>
           <button class="btn-main" onclick="adminIssue()">ISSUE TOKEN</button>
         </div>
@@ -495,8 +495,8 @@ function renderPlans() {
     return `<div class="plan ${f?'featured':''}" onclick="selectPlan(${a})">
       ${f?'<div class="plan-badge">POPULAR</div>':''}
       <div class="plan-tier">${p.tier}</div>
-      <div class="plan-price"><sup>â‚¹</sup>${a}</div>
-      <div class="plan-desc">${p.label} &nbsp;Â·&nbsp; ${CFG.validityDays} days</div>
+      <div class="plan-price"><sup>₹</sup>${a}</div>
+      <div class="plan-desc">${p.label} &nbsp;·&nbsp; ${CFG.validityDays} days</div>
       <div class="access-bar-bg"><div class="access-bar-fill" style="width:${p.access}%"></div></div>
       <ul class="plan-feats">${p.features.map(x=>`<li>${x}</li>`).join('')}</ul>
       <button class="btn-plan">SELECT PLAN</button>
@@ -511,7 +511,7 @@ function selectPlan(amount) {
   const plan  = CFG.plans[amount];
   const remark = `VaultPay-${plan.name}-${S.txnId}`;
   const upi   = `upi://pay?pa=${CFG.upiId}&pn=${encodeURIComponent(CFG.merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(remark)}`;
-  document.getElementById('pay-amt').textContent = `â‚¹${amount}`;
+  document.getElementById('pay-amt').textContent = `₹${amount}`;
   document.getElementById('upi-show').textContent = CFG.upiId;
   document.getElementById('lnk-gpay').href    = `gpay://upi/pay?pa=${CFG.upiId}&pn=${CFG.merchantName}&am=${amount}&cu=INR&tn=${remark}`;
   document.getElementById('lnk-phonepe').href = `phonepe://pay?pa=${CFG.upiId}&pn=${CFG.merchantName}&am=${amount}&cu=INR&tn=${remark}`;
@@ -549,7 +549,7 @@ async function submitPay() {
     const w = RL.wait();
     document.getElementById('rate-warn').textContent = `Too many attempts. Please wait ${w} minute(s).`;
     document.getElementById('rate-warn').classList.add('show');
-    toast(`Rate limited â€” wait ${w} min`,'err');
+    toast(`Rate limited — wait ${w} min`,'err');
     return;
   }
   RL.inc();
@@ -558,7 +558,7 @@ async function submitPay() {
   PS.add({ utr, plan:S.plan, amount:S.plan, txnRef:S.txnId, uid:S.uid });
   document.getElementById('p-utr').textContent  = utr;
   document.getElementById('p-plan').textContent = CFG.plans[S.plan].name;
-  document.getElementById('p-amt').textContent  = `â‚¹${S.plan}`;
+  document.getElementById('p-amt').textContent  = `₹${S.plan}`;
   document.getElementById('p-status').textContent = 'Pending';
   document.getElementById('p-status').style.color = 'var(--blue)';
   show('pending');
@@ -573,16 +573,16 @@ async function checkPending() {
   if(!entry) return;
   if(entry.status === 'approved') {
     clearInterval(S.pendingTimer);
-    document.getElementById('p-status').textContent = 'Approved âœ“';
+    document.getElementById('p-status').textContent = 'Approved ✓';
     document.getElementById('p-status').style.color = 'var(--green)';
     await activateSub(entry.plan, utr, entry.uid || S.uid);
   } else if(entry.status === 'rejected') {
     clearInterval(S.pendingTimer);
-    document.getElementById('p-status').textContent = 'Rejected âœ—';
+    document.getElementById('p-status').textContent = 'Rejected ✗';
     document.getElementById('p-status').style.color = 'var(--red)';
     toast('Payment not verified. Contact support.','err');
   } else {
-    toast('Still pending â€” check again soon','ok');
+    toast('Still pending — check again soon','ok');
   }
 }
 
@@ -621,7 +621,7 @@ async function doCheck() {
     if(r.valid) {
       document.getElementById('chk-result').innerHTML = `
         <div class="result-ok">
-          <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:10px">âœ“ VALID SUBSCRIPTION</div>
+          <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:10px">✓ VALID SUBSCRIPTION</div>
           <div style="display:grid;gap:6px">
             <div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">Access Level</span><span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:24px">${r.access}%</span></div>
             <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--dim)">Plan</span><span>${r.plan}</span></div>
@@ -658,7 +658,7 @@ function loadAdminPending() {
     <div class="pend-item">
       <div class="pend-item-info">
         <div class="pend-txn">UTR: ${item.utr}</div>
-        <div class="pend-meta">${CFG.plans[item.plan]?.name} Â· â‚¹${item.amount} Â· ${new Date(item.ts).toLocaleTimeString('en-IN')}</div>
+        <div class="pend-meta">${CFG.plans[item.plan]?.name} · ₹${item.amount} · ${new Date(item.ts).toLocaleTimeString('en-IN')}</div>
       </div>
       <button class="btn-approve" onclick="admApprove('${item.utr}',${item.plan})">APPROVE</button>
       <button class="btn-reject" onclick="admReject('${item.utr}')">REJECT</button>
@@ -668,7 +668,7 @@ function loadAdminPending() {
 async function admApprove(utr, plan) {
   PS.approve(utr);
   const {token, payload} = await Tkn.create(plan, utr, rndHex(8));
-  toast(`Approved â€” ${CFG.plans[plan].name} token issued`,'ok');
+  toast(`Approved — ${CFG.plans[plan].name} token issued`,'ok');
   document.getElementById('adm-issued').innerHTML = `
     <div class="result-ok">
       <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:8px">TOKEN ISSUED FOR UTR: ${utr}</div>
@@ -691,7 +691,7 @@ async function adminIssue() {
   const {token, payload} = await Tkn.create(plan, txn, rndHex(8));
   document.getElementById('adm-issued').innerHTML = `
     <div class="result-ok">
-      <div style="font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px">${CFG.plans[plan].name} Â· ${payload.access}% access Â· valid ${CFG.validityDays}d Â· ID: ${payload.id}</div>
+      <div style="font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px">${CFG.plans[plan].name} · ${payload.access}% access · valid ${CFG.validityDays}d · ID: ${payload.id}</div>
       <div class="token-val">${token}</div>
       <button class="btn-copy" style="margin-top:10px" onclick="navigator.clipboard.writeText('${token}')">COPY TOKEN</button>
     </div>`;
@@ -706,13 +706,13 @@ async function adminVerify() {
     const p = await Tkn.verify(t);
     const d = Math.ceil((p.exp-Date.now())/86400000);
     el.innerHTML = `<div class="result-ok">
-      <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:8px">âœ“ VALID</div>
-      Plan: <strong>${p.planName}</strong> &nbsp;Â·&nbsp; Access: <strong style="color:var(--gold)">${p.access}%</strong><br>
-      Days left: <strong style="color:var(--green)">${d}</strong> &nbsp;Â·&nbsp; ID: ${p.id}<br>
-      Issued: ${new Date(p.iat).toLocaleString('en-IN')} &nbsp;Â·&nbsp; Expires: ${new Date(p.exp).toLocaleString('en-IN')}
+      <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:8px">✓ VALID</div>
+      Plan: <strong>${p.planName}</strong> &nbsp;·&nbsp; Access: <strong style="color:var(--gold)">${p.access}%</strong><br>
+      Days left: <strong style="color:var(--green)">${d}</strong> &nbsp;·&nbsp; ID: ${p.id}<br>
+      Issued: ${new Date(p.iat).toLocaleString('en-IN')} &nbsp;·&nbsp; Expires: ${new Date(p.exp).toLocaleString('en-IN')}
     </div>`;
   } catch(e) {
-    el.innerHTML = `<div class="result-err">âœ— ${e.message}</div>`;
+    el.innerHTML = `<div class="result-err">✗ ${e.message}</div>`;
   }
 }
 
