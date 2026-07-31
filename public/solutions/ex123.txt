@@ -1,0 +1,21 @@
+def celsius_to_f(c):
+    return (c * 9/5) + 32
+
+def fahrenheit_to_c(f):
+    return (f - 32) * 5/9
+
+def celsius_to_k(c):
+    return c + 273.15
+
+temp = 25
+print(f'{temp}°C = {celsius_to_f(temp):.1f}°F')
+print(f'{temp}°C = {celsius_to_k(temp):.2f}K')
+
+ftemp = 77
+print(f'{ftemp}°F = {fahrenheit_to_c(ftemp):.1f}°C')
+
+# Conversion table
+print('\
+Conversion Table:')
+for c in range(0, 101, 10):
+    print(f'{c}°C = {celsius_to_f(c):.0f}°F')

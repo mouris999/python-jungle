@@ -1,0 +1,12 @@
+import asyncio
+
+async def greet(name):
+    await asyncio.sleep(0.1)
+    print(f'Hello, {name}!')
+
+async def main():
+    await greet('JungleExplorer')
+    await greet('TigerTracker')
+
+asyncio.run(main())
+print('Async functions completed!')

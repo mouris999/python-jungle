@@ -1,0 +1,11 @@
+class JungleError(Exception):
+    pass
+def check_positive(n):
+    if n < 0:
+        raise JungleError("No negatives in the jungle!")
+    return n
+try:
+    check_positive(-5)
+except JungleError as e:
+    print(e)
+print(check_positive(10))

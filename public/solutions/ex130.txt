@@ -1,0 +1,6 @@
+import re
+data = 'name: Tiger\
+count: 5\
+habitat: Forest'
+result = re.sub(r': ', ' = ', data)
+print(result)

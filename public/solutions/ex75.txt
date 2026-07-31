@@ -1,0 +1,10 @@
+import sqlite3
+conn = sqlite3.connect('jungle.db')
+cursor = conn.cursor()
+cursor.execute('CREATE TABLE IF NOT EXISTS animals(name TEXT, age INTEGER)')
+data = [('Tiger', 8), ('Elephant', 15), ('Parrot', 3), ('Snake', 12)]
+cursor.executemany('INSERT INTO animals VALUES (?, ?)', data)
+cursor.execute('SELECT * FROM animals WHERE age > 3 ORDER BY age DESC LIMIT 2')
+results = cursor.fetchall()
+print('Results:', results)
+conn.close()

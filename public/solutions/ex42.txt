@@ -1,0 +1,7 @@
+class JungleTreasure:
+    def __init__(self):
+        self._location = "Deep in the jungle"
+    def reveal_location(self):
+        print("Treasure is at:", self._location)
+t = JungleTreasure()
+t.reveal_location()

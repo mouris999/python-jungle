@@ -1,0 +1,5 @@
+t = [35, 22, 28, 31, 19, 40, 25]
+print("Ascending:", sorted(t))
+print("Descending:", sorted(t, reverse=True))
+print("Min:", min(t))
+print("Max:", max(t))

@@ -1,0 +1,21 @@
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    def __str__(self):
+        return f'{self.name} ({self.species})'
+
+class Zoo:
+    def __init__(self):
+        self.animals = []
+    def add(self, animal):
+        self.animals.append(animal)
+    def list_all(self):
+        return [str(a) for a in self.animals]
+
+zoo = Zoo()
+zoo.add(Animal('Lion', 'Panthera'))
+zoo.add(Animal('Elephant', 'Loxodonta'))
+print('Our Zoo:')
+for a in zoo.list_all():
+    print(f'  - {a}')

@@ -1,0 +1,4 @@
+Dog = type("Dog", (), {"speak": lambda self: "Woof!"})
+d = Dog()
+print(d.speak())
+print(type(d))

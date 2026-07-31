@@ -1,0 +1,12 @@
+class Positive:
+    def __get__(self, obj, o=None):
+        return obj.__dict__.get("_val", 0)
+    def __set__(self, obj, value):
+        if value < 0:
+            raise ValueError("Must be positive")
+        obj.__dict__["_val"] = value
+class Product:
+    price = Positive()
+    def __init__(self, p): self.price = p
+p = Product(10.99)
+print(p.price)

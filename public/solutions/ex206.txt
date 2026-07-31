@@ -1,0 +1,10 @@
+public class Main {
+    public static void main(String[] args) {
+        String fruit = "apple";
+        switch (fruit) {
+            case "apple": System.out.println("Red"); break;
+            case "banana": System.out.println("Yellow"); break;
+            default: System.out.println("Unknown");
+        }
+    }
+}

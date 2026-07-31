@@ -1,0 +1,7 @@
+msg = "  Welcome TO the Jungle!  "
+clean = msg.strip().lower()
+updated = clean.replace("jungle", "Python Jungle")
+words = updated.split()
+print(clean)
+print(updated)
+print(words)

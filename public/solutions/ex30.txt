@@ -1,0 +1,4 @@
+a = ["dog", "cat", "cow"]
+s = ["bark", "meow", "moo"]
+for i, p in enumerate(zip(a, s)):
+    print(f"{i+1}. {p[0]} says {p[1]}")

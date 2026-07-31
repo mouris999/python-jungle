@@ -1,0 +1,14 @@
+csv_data = '''name,population
+Tiger,5000
+Elephant,10000
+Parrot,30000'''
+lines = csv_data.strip().split('\
+')
+total = 0
+cnt = 0
+for line in lines[1:]:
+    parts = line.split(',')
+    total += int(parts[1])
+    cnt += 1
+    print(f'{parts[0]}: {parts[1]}')
+print(f'Average population: {total/cnt:.0f}')

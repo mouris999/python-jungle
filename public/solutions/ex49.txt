@@ -1,0 +1,8 @@
+class JungleCamp:
+    def __enter__(self):
+        print("Setting up jungle camp")
+        return self
+    def __exit__(self, *args):
+        print("Breaking down camp")
+with JungleCamp():
+    print("Resting in the jungle...")

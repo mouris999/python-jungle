@@ -1,0 +1,16 @@
+print('=== Project Structure Demo ===')
+print('''\
+my_project/'
+'  main.py'
+'  config.py'
+'  utils/'
+'    __init__.py'
+'    helpers.py'
+'  models/'
+'    __init__.py'
+'    animal.py\
+''')
+print('import chain:')
+print('main.py -> from config import DATABASE_URL')
+print('main.py -> from utils.helpers import format_date')
+print('main.py -> from models.animal import Animal')

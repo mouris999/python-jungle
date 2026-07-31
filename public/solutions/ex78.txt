@@ -1,0 +1,17 @@
+import pytest
+
+def multiply(a, b):
+    return a * b
+
+class TestMultiply:
+    def test_basic(self):
+        assert multiply(3, 4) == 12
+    
+    def test_zero(self):
+        assert multiply(0, 100) == 0
+    
+    def test_negative(self):
+        assert multiply(-2, 5) == -10
+
+print('Test class created with 3 test methods')
+print('Run with: pytest test_file.py')

@@ -1,0 +1,4 @@
+import math
+print(math.sqrt(144))
+print(math.pi)
+print(math.pow(2, 10))

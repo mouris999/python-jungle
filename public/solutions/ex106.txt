@@ -1,0 +1,21 @@
+import random
+
+conditions = ['Sunny', 'Cloudy', 'Rainy', 'Stormy', 'Snowy']
+temp = random.randint(-10, 40)
+condition = random.choice(conditions)
+
+print(f'Weather Report:')
+print(f'Temperature: {temp}°C')
+print(f'Condition: {condition}')
+
+if temp > 30:
+    print('It\\'s hot! Stay hydrated.')
+elif temp > 20:
+    print('Nice weather for a walk!')
+elif temp > 10:
+    print('A bit cool, bring a jacket.')
+else:
+    print('Bundle up, it\\'s cold!')
+
+if 'Rain' in condition or 'Storm' in condition:
+    print('Don\\'t forget an umbrella!')

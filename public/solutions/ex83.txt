@@ -1,0 +1,18 @@
+import asyncio
+
+class AsyncResource:
+    async def __aenter__(self):
+        await asyncio.sleep(0.01)
+        print('Acquiring resource...')
+        return self
+    
+    async def __aexit__(self, *args):
+        await asyncio.sleep(0.01)
+        print('Releasing resource...')
+
+async def main():
+    async with AsyncResource() as res:
+        print('Using resource...')
+
+asyncio.run(main())
+print('Context manager worked!')

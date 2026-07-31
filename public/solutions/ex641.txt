@@ -1,0 +1,8 @@
+from contextlib import contextmanager
+@contextmanager
+def tag(name):
+    print(f"<{name}>")
+    yield
+    print(f"</{name}>")
+with tag("div"):
+    print("Content inside div")

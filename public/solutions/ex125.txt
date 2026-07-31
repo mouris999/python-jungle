@@ -1,0 +1,6 @@
+def build_query(**filters):
+    print('WHERE')
+    for key, value in filters.items():
+        print(f"  {key} = {value}")
+
+build_query(species='Tiger', age=5, habitat='Forest')

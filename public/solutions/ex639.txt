@@ -1,0 +1,9 @@
+def greet(name):
+    return f"Hello {name}"
+greet.called = 0
+def tracked_greet(name):
+    greet.called += 1
+    return greet(name)
+print(tracked_greet("Alice"))
+print(tracked_greet("Bob"))
+print(f"Called {greet.called} times")

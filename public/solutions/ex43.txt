@@ -1,0 +1,12 @@
+class Snake:
+    def move(self):
+        print("Snake slithers through the grass")
+class Frog:
+    def move(self):
+        print("Frog hops across the pond")
+def animal_move(animal):
+    animal.move()
+s = Snake()
+f = Frog()
+animal_move(s)
+animal_move(f)

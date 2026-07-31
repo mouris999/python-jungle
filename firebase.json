@@ -1,0 +1,41 @@
+{
+  "hosting": [{
+    "target": "python-jungle-com",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/payment.html",
+        "destination": "/payment.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "appAssociation": "AUTO"
+  }, {
+    "target": "python-2bab1",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/payment.html",
+        "destination": "/payment.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "appAssociation": "AUTO"
+  }]
+}

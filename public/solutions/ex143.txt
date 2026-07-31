@@ -1,0 +1,25 @@
+import os
+CATEGORIES = {
+    'Images': ['.jpg', '.png', '.gif'],
+    'Documents': ['.pdf', '.txt', '.md'],
+    'Code': ['.py', '.js', '.html'],
+    'Data': ['.csv', '.json']
+}
+def categorize_file(f):
+    ext = os.path.splitext(f)[1].lower()
+    for cat, exts in CATEGORIES.items():
+        if ext in exts:
+            return cat
+    return 'Other'
+def organize_files(flist):
+    org = {}
+    for f in flist:
+        c = categorize_file(f)
+        if c not in org:
+            org[c] = []
+        org[c].append(f)
+    return org
+
+files = ['photo.jpg', 'report.pdf', 'script.py', 'data.csv']
+for cat, flist in organize_files(files).items():
+    print(f'{cat}: {', '.join(flist)}')

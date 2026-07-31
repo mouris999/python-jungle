@@ -1,0 +1,14 @@
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+data = np.array([[10, 200], [15, 250], [20, 300], [25, 350]])
+print('Original:')
+print(data)
+
+scaler = StandardScaler()
+scaled = scaler.fit_transform(data)
+print('\
+Scaled:')
+print(scaled)
+print('\
+Mean after scaling:', scaled.mean(axis=0))

@@ -1,0 +1,16 @@
+def fetch_data(url):
+    errors = {
+        'http://bad url': 404,
+        'http://good url': 200
+    }
+    if url not in errors:
+        return {'error': 'Unknown URL'}
+    if errors[url] == 404:
+        return {'error': 'Not Found', 'code': 404}
+    return {'data': 'success', 'code': 200}
+
+result = fetch_data('http://bad url')
+if 'error' in result:
+    print(f"Error: {result['error']} (status {result['code']})")
+else:
+    print('Data:', result['data'])

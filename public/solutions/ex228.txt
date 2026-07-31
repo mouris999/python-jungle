@@ -1,0 +1,9 @@
+public class Main {
+    public static void main(String[] args) {
+        int val = 42;
+        printVal(val);
+    }
+    static void printVal(int v) {
+        System.out.println(v);
+    }
+}

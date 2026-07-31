@@ -1,0 +1,18 @@
+req_content = '''flask>=2.0
+pandas>=1.5
+numpy>=1.21
+requests>=2.28
+'''
+print('requirements.txt:')
+print(req_content)
+
+procfile = '''web: python app.py
+'''
+print('Procfile:')
+print(procfile)
+
+print('\
+Deployment checklist:')
+print('1. requirements.txt lists dependencies')
+print('2. Procfile tells platform how to run app')
+print('3. Push to GitHub, connect to host')

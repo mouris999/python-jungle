@@ -1,0 +1,32 @@
+import json
+class JungleTracker:
+    def __init__(self):
+        self.s = []
+    def add_sighting(self, a, l, c):
+        self.s.append({'animal': a, 'location': l, 'count': c})
+    def get_summary(self):
+        total = sum(x['count'] for x in self.s)
+        unique = {x['animal'] for x in self.s}
+        return {'total_sightings': len(self.s),
+                'total_animals': total,
+                'unique_species': len(unique)}
+    def save(self, f):
+        with open(f, 'w') as fl:
+            json.dump(self.s, fl)
+    def load(self, f):
+        with open(f, 'r') as fl:
+            self.s = json.load(fl)
+    def query(self, a):
+        return [x for x in self.s if x['animal'] == a]
+t = JungleTracker()
+t.add_sighting('Tiger', 'River', 2)
+t.add_sighting('Parrot', 'Canopy', 5)
+t.add_sighting('Elephant', 'Waterhole', 3)
+s = t.get_summary()
+print(f'Total sightings: {s["total_sightings"]}')
+print(f'Total animals: {s["total_animals"]}')
+print(f'Unique species: {s["unique_species"]}')
+t.save('sightings.json')
+t2 = JungleTracker()
+t2.load('sightings.json')
+print('Loaded:', len(t2.s), 'sightings')

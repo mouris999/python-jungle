@@ -1,0 +1,12 @@
+# Simulating file operations
+content = "Line 1: Hello\
+Line 2: World"
+print('Writing to file...')
+print('Content: ' + content.replace('\
+', ', '))
+
+# Simulate error handling
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print('Caught: Cannot divide by zero!')

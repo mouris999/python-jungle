@@ -1,0 +1,11 @@
+print('Simulating requests.get()...')
+data = {
+    'user': 'JungleExplorer',
+    'location': 'Rainforest',
+    'status': 'active'
+}
+print('Response JSON:', data)
+print('\
+Accessing fields:')
+print('User:', data['user'])
+print('Location:', data['location'])

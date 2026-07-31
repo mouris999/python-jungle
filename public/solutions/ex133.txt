@@ -1,0 +1,9 @@
+from datetime import datetime, timedelta
+today = datetime.now()
+week_later = today + timedelta(days=7)
+print(f'Today: {today.strftime("%Y-%m-%d")}')
+print(f'Week later: {week_later.strftime("%Y-%m-%d")}')
+d1 = datetime(2026, 1, 1)
+d2 = datetime(2026, 5, 16)
+diff = d2 - d1
+print(f'Days between: {diff.days}')

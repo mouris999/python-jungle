@@ -1,0 +1,4 @@
+sq = [x**2 for x in range(1, 11)]
+print(sq)
+even = [x for x in sq if x % 2 == 0]
+print(even)

@@ -1,0 +1,4 @@
+name = "Toucan"
+score = 42
+pct = 87.5
+print("Name:{:<15s} Score:{:>5d} Percentage:{:>8.2f}%".format(name, score, pct))

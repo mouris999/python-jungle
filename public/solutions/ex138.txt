@@ -1,0 +1,9 @@
+from flask import Flask, jsonify
+app = Flask(__name__)
+animals = [
+    {'id': 1, 'name': 'Tiger', 'species': 'Panthera tigris'},
+    {'id': 2, 'name': 'Elephant', 'species': 'Loxodonta'}
+]
+import json
+print('GET /api/animals -> JSON:')
+print(json.dumps(animals, indent=2))

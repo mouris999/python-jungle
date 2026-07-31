@@ -1,0 +1,17 @@
+def calculate(a, op, b):
+    if op == '+':
+        return a + b
+    elif op == '-':
+        return a - b
+    elif op == '*':
+        return a * b
+    elif op == '/':
+        return a / b if b != 0 else 'Error'
+    return 'Invalid'
+
+n1 = float(input('First number: '))
+op = input('Operator (+-*/): ')
+n2 = float(input('Second number: '))
+
+result = calculate(n1, op, n2)
+print(f'{n1} {op} {n2} = {result}')

@@ -1,0 +1,16 @@
+api_response = '''
+{
+  "status": "success",
+  "data": {
+    "animals": [
+      {"name": "Tiger", "population": 5000},
+      {"name": "Elephant", "population": 10000}
+    ]
+  }
+}
+'''
+import json
+parsed = json.loads(api_response.replace('\
+', '').replace('  ', ''))
+print('Status:', parsed['status'])
+print('First animal:', parsed['data']['animals'][0]['name'])

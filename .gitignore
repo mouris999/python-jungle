@@ -1,0 +1,12 @@
+node_modules/
+.firebase/
+*.log
+.env
+users.csv
+__test_*.js
+__test_*.py
+verify*.py
+check_*.py
+fin_check*.py
+*.tmp
+google-pay/

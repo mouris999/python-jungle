@@ -1,0 +1,10 @@
+import pandas as pd
+data = {
+    'animal': ['Tiger', 'Elephant', 'Parrot'],
+    'count': [5, 12, 30],
+    'habitat': ['Forest', 'Savanna', 'Canopy']
+}
+df = pd.DataFrame(data)
+print(df)
+print('\
+Columns:', list(df.columns))

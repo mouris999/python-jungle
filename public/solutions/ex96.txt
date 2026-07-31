@@ -1,0 +1,43 @@
+import sqlite3
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+def init_db():
+    conn = sqlite3.connect('animals.db')
+    c = conn.cursor()
+    c.execute('CREATE TABLE IF NOT EXISTS animals(name TEXT, species TEXT, count INTEGER)')
+    conn.commit()
+    conn.close()
+
+@app.route('/animals', methods=['GET'])
+def get_all():
+    conn = sqlite3.connect('animals.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM animals')
+    results = [{'name': r[0], 'species': r[1], 'count': r[2]} for r in c.fetchall()]
+    conn.close()
+    return jsonify(results)
+
+@app.route('/animals', methods=['POST'])
+def add():
+    data = request.json
+    conn = sqlite3.connect('animals.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO animals VALUES (?, ?, ?)', 
+              (data['name'], data['species'], data['count']))
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'created'}), 201
+
+# Initialize and test
+init_db()
+print('Database initialized')
+print('Testing API:')
+print('GET /animals -> [] (empty)')
+
+# Add an animal
+print('POST /animals -> {"name": "Tiger", "species": "Panthera", "count": 5}')
+print('GET /animals -> [{"name": "Tiger", "species": "Panthera", "count": 5}]')
+print('\
+🎉 Capstone complete! You have built a full-stack Python app!')

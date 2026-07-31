@@ -1,0 +1,16 @@
+class JungleIterator:
+    def __init__(self):
+        self.animals = ["Tiger", "Elephant", "Parrot"]
+        self.i = 0
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.i >= len(self.animals):
+            raise StopIteration
+        result = self.animals[self.i]
+        self.i += 1
+        return result
+it = JungleIterator()
+print(next(it))
+print(next(it))
+print(next(it))

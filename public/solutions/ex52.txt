@@ -1,0 +1,18 @@
+class JungleGuide:
+    def __init__(self, n):
+        self._name = n
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, v):
+        self._name = v
+    @name.deleter
+    def name(self):
+        self._name = "Unknown"
+g = JungleGuide("Alex")
+print(g.name)
+g.name = "Maria"
+print(g.name)
+del g.name
+print(g.name)

@@ -1,0 +1,5 @@
+a = ['cat', 'dog', 'cat', 'bird', 'dog']
+u = {x for x in a}
+l = {x: len(x) for x in u}
+print('Unique:', u)
+print('Lengths:', l)

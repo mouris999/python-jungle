@@ -1,0 +1,8 @@
+def multiply_all(*args):
+    result = 1
+    for n in args:
+        result *= n
+    return result
+
+print(multiply_all(2, 3, 4))
+print(multiply_all(1, 2, 3, 4, 5))

@@ -1,0 +1,11 @@
+import json
+from datetime import datetime
+print('Standard library: json, datetime')
+print(f'Today: {datetime.now().strftime("%Y-%m-%d")}')
+data = {'animal': 'Tiger', 'count': 5}
+print(f'JSON: {json.dumps(data)}')
+print('\
+3 import types:')
+print('1. Standard library - no install')
+print('2. Third-party - pip install')
+print('3. Local - from .module import fn')

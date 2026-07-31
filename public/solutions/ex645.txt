@@ -1,0 +1,8 @@
+class Rectangle:
+    def __init__(self, w, h): self.w, self.h = w, h
+    @property
+    def area(self): return self.w * self.h
+    @property
+    def perimeter(self): return 2 * (self.w + self.h)
+r = Rectangle(4, 5)
+print(f"Area: {r.area}, Peri: {r.perimeter}")

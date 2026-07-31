@@ -1,0 +1,6 @@
+print('Dynamic route example:')
+print('/explorer/Alice -> Hello, Explorer Alice!')
+print('/explorer/Bob -> Hello, Explorer Bob!')
+
+name = 'Alice'
+print(f'/explorer/{name} -> Hello, Explorer {name}!')

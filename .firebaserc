@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "python-2bab1"
+  },
+  "targets": {
+    "python-2bab1": {
+      "hosting": {
+        "python-jungle-com": [
+          "python-jungle-com"
+        ],
+        "python-2bab1": [
+          "python-2bab1"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

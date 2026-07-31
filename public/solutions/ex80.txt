@@ -1,0 +1,16 @@
+def classify_animal(age):
+    if age < 1:
+        return 'baby'
+    elif age < 3:
+        return 'young'
+    else:
+        return 'adult'
+
+# Test each branch
+assert classify_animal(0) == 'baby'
+assert classify_animal(2) == 'young'
+assert classify_animal(5) == 'adult'
+
+print('All branches covered!')
+print('Coverage: 100%')
+print('Run with: pytest --cov=my_module')

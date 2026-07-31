@@ -1,0 +1,9 @@
+import json
+
+data = '{"tigers": 5, "elephants": 10, "parrots": 20}'
+parsed = json.loads(data)
+print(f'Parsed: {parsed}')
+
+values = list(parsed.values())
+avg = sum(values) / len(values)
+print(f'Average: {avg:.1f}')

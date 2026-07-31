@@ -1,0 +1,4 @@
+import itertools
+animals = ["Tiger", "Elephant", "Parrot", "Snake"]
+for combo in itertools.combinations(animals, 2):
+    print(combo)

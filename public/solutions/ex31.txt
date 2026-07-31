@@ -1,0 +1,10 @@
+with open('jungle.txt', 'w') as f:
+    f.write('The jungle is alive\
+')
+    f.write('Birds are singing\
+')
+    f.write('The river flows\
+')
+with open('jungle.txt', 'r') as f:
+    for line in f:
+        print(line.strip())

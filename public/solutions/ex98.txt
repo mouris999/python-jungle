@@ -1,0 +1,7 @@
+import random
+results = []
+for i in range(5):
+    roll = random.randint(1, 6)
+    results.append(roll)
+    print(f'Roll {i+1}: {roll}')
+print(f'Total: {sum(results)}')

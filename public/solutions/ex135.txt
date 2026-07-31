@@ -1,0 +1,12 @@
+config = {
+    'app_name': 'JungleTracker',
+    'version': '2.0',
+    'debug': True,
+    'database': {'host': 'localhost', 'port': 5432, 'name': 'jungle_db'},
+    'features': ['reports', 'maps', 'alerts']
+}
+print(f"App: {config['app_name']} v{config['version']}")
+print(f"Database: {config['database']['host']}:{config['database']['port']}")
+config['debug'] = False
+config['features'].append('export')
+print(f"Config updated: {config}")

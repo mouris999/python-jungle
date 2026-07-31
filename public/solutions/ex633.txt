@@ -1,0 +1,4 @@
+fs = frozenset([1,2,3,3,2])
+print(fs)
+lookup = {frozenset([1,2]): "pair"}
+print(lookup[frozenset([1,2])])

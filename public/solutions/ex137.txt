@@ -1,0 +1,14 @@
+card_style = {
+    '.animal-card': {
+        'background': '#1A2E1A',
+        'border': '1px solid #2D8F4E',
+        'border-radius': '8px',
+        'padding': '16px',
+        'color': '#E8F0E2'
+    }
+}
+for sel, rules in card_style.items():
+    print(f'{sel} {{"')
+    for p, v in rules.items():
+        print(f'  {p}: {v};')
+    print('}')

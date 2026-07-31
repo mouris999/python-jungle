@@ -1,0 +1,6 @@
+animals = ['Tiger', 'Elephant', 'Parrot']
+animal_ages = {'Tiger': 5, 'Elephant': 10}
+print(f'Animals: {animals}')
+print(f'Tiger age: {animal_ages["Tiger"]}')
+animal_ages['Parrot'] = 2
+print(f'Updated: {animal_ages}')

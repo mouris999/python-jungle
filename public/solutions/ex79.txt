@@ -1,0 +1,18 @@
+import pytest
+
+@pytest.fixture
+def animal_data():
+    return {
+        'name': 'Tiger',
+        'species': 'Panthera tigris',
+        'age': 5
+    }
+
+def test_animal_name(animal_data):
+    assert animal_data['name'] == 'Tiger'
+
+def test_animal_age(animal_data):
+    assert animal_data['age'] == 5
+
+print('Fixture provides data to tests')
+print('Test passed with fixture data')

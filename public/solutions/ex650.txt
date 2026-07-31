@@ -1,0 +1,14 @@
+class Validated:
+    def __init__(self, v): self.validator = v; self.data = {}
+    def __get__(self, obj, o=None):
+        return self.data.get(id(obj))
+    def __set__(self, obj, value):
+        self.validator(value)
+        self.data[id(obj)] = value
+def non_empty(s):
+    if not s.strip(): raise ValueError()
+class Person:
+    name = Validated(non_empty)
+    def __init__(self, n): self.name = n
+p = Person("Alice")
+print(p.name)

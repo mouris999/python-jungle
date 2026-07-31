@@ -1,0 +1,9 @@
+print('Form submission simulation:')
+form_data = {'name': 'JungleExplorer'}
+print(f"Received form data: {form_data}")
+name = form_data.get('name', 'Guest')
+print(f"Thanks, {name}!")
+
+form_data2 = {'name': 'TigerTracker'}
+name2 = form_data2.get('name', 'Guest')
+print(f"Thanks, {name2}!")

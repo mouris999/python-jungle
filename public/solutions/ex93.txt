@@ -1,0 +1,22 @@
+import argparse
+
+parser = argparse.ArgumentParser(description='Jungle CLI')
+parser.add_argument('command', choices=['add', 'list', 'search'])
+parser.add_argument('--name', help='Animal name')
+parser.add_argument('--location', help='Animal location')
+
+args = parser.parse_args(['add', '--name', 'Tiger', '--location', 'Forest'])
+
+if args.command == 'add':
+    print(f'Added {args.name} at {args.location}')
+    
+args2 = parser.parse_args(['list'])
+if args2.command == 'list':
+    print('Listing all animals...')
+    print('- Tiger (Forest)')
+    print('- Elephant (Waterhole)')
+    
+args3 = parser.parse_args(['search', '--name', 'Tiger'])
+if args3.command == 'search':
+    print(f'Searching for {args3.name}...')
+    print('Found: Tiger at Forest')

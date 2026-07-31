@@ -1,0 +1,19 @@
+compose = '''
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgres://db/jungle
+  
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=jungle
+    volumes:
+      - ./data:/var/lib/postgresql/data
+'''
+print('Docker Compose config:')
+print(compose)

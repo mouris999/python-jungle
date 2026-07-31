@@ -1,0 +1,30 @@
+html_content = '''
+<html>
+<body>
+<div class="animal">
+  <h2>Tiger</h2>
+  <p>Population: 5,000</p>
+</div>
+<div class="animal">
+  <h2>Elephant</h2>
+  <p>Population: 10,000</p>
+</div>
+</body>
+</html>
+'''
+
+# Simulate BeautifulSoup parsing
+print('Scraping HTML...')
+animals = ['Tiger', 'Elephant']
+for animal in animals:
+    print(f'Found: {animal}')
+    
+print('\
+Scraped data:')
+print('Tiger: 5,000')
+print('Elephant: 10,000')
+
+# Note: In real scraping:
+# soup = BeautifulSoup(html, 'html.parser')
+# for item in soup.select('.animal'):
+#     name = item.select_one('h2').text

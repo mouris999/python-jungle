@@ -1,0 +1,15 @@
+rates = {
+    'INR': 83.0,
+    'EUR': 0.92,
+    'GBP': 0.79,
+    'JPY': 155.0
+}
+
+usd = float(input('Enter USD: '))
+currency = input('Convert to (INR/EUR/GBP/JPY): ').upper()
+
+if currency in rates:
+    converted = usd * rates[currency]
+    print(f'${usd} = {converted:.2f} {currency}')
+else:
+    print('Currency not supported')

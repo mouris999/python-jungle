@@ -1,0 +1,16 @@
+def get_stock_price(symbol):
+    # Simulate fetching stock data from an API
+    # Real apps would use: import yfinance
+    stocks = {
+        'AAPL': 175.50,  # Apple Inc.
+        'GOOGL': 140.25,  # Alphabet (Google)
+        'TSLA': 245.80   # Tesla Inc.
+    }
+    # Check if symbol exists in our data
+    if symbol in stocks:
+        return f'{symbol}: ${stocks[symbol]:.2f}'
+    return f'{symbol}: Not found'
+
+print(get_stock_price('AAPL'))
+print(get_stock_price('GOOGL'))
+print(get_stock_price('INVALID'))

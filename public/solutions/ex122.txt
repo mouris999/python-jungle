@@ -1,0 +1,34 @@
+class Account:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+    
+    def deposit(self, amount):
+        self.balance += amount
+        print(f'{self.owner}: Deposited ${amount}')
+    
+    def withdraw(self, amount):
+        if amount > self.balance:
+            print(f'{self.owner}: Insufficient funds!')
+            return False
+        self.balance -= amount
+        print(f'{self.owner}: Withdrew ${amount}')
+        return True
+    
+    def transfer(self, amount, other):
+        if self.withdraw(amount):
+            other.deposit(amount)
+            print(f'Transferred ${amount} to {other.owner}')
+    
+    def __str__(self):
+        return f'{self.owner}: ${self.balance}'
+
+alice = Account('Alice', 1000)
+bob = Account('Bob', 500)
+print(alice)
+print(bob)
+alice.deposit(500)
+alice.withdraw(200)
+alice.transfer(300, bob)
+print(alice)
+print(bob)

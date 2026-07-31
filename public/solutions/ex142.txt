@@ -1,0 +1,10 @@
+class Config:
+    DATABASE_URL = 'postgresql://localhost:5432/jungle'
+    SECRET_KEY = 'your-secret-key-here'
+    DEBUG = True
+    API_VERSION = 'v1'
+    @classmethod
+    def info(cls):
+        return f'DB: {cls.DATABASE_URL} | Debug: {cls.DEBUG} | API: {cls.API_VERSION}'
+print('Configuration:')
+print(Config.info())

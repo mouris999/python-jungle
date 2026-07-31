@@ -1,0 +1,10 @@
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Welcome to Jungle Camp!'
+
+if __name__ == '__main__':
+    print('Flask app would start on http://localhost:5000')
+    print('Visit http://localhost:5000 to see: Welcome to Jungle Camp!')

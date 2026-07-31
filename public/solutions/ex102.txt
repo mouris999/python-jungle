@@ -1,0 +1,25 @@
+score = 0
+
+q1 = input('What is 2+2? ')
+if q1 == '4':
+    score += 1
+    print('Correct!')
+else:
+    print('Wrong, it was 4')
+
+q2 = input('What is Python\\'s print function? ')
+if 'print' in q2.lower():
+    score += 1
+    print('Correct!')
+else:
+    print('Wrong')
+
+q3 = input('Type: list.append() does what? ')
+if 'add' in q3.lower() or 'end' in q3.lower():
+    score += 1
+    print('Correct!')
+else:
+    print('Wrong')
+
+print(f'\
+Your score: {score}/3')

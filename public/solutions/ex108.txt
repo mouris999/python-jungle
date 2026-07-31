@@ -1,0 +1,6 @@
+length = 5
+width = 3
+area = length * width
+print(f'Area: {area}')
+print(f'Is area > 10? {area > 10}')
+print(f'Is area == 15 and length == 5? {area == 15 and length == 5}')

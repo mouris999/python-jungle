@@ -1,0 +1,5 @@
+name = "Alex"
+animal = "Toucan"
+sound = "Squawk"
+print(f"In the jungle, {animal} says {sound}!")
+print(f"{name} explored the Python jungle.")

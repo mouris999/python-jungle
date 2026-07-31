@@ -1,0 +1,17 @@
+class JunglePath:
+    def __init__(self, n, d):
+        self.n = n
+        self.d = d
+    def __len__(self):
+        return self.d
+    def __str__(self):
+        return f"Path: {self.n} ({self.d}km)"
+    def __add__(self, other):
+        return JunglePath(self.n + " + " + other.n, self.d + other.d)
+p1 = JunglePath("River Trail", 5)
+p2 = JunglePath("Mountain Loop", 10)
+print(p1)
+print(len(p1))
+c = p1 + p2
+print(c)
+print(len(c))

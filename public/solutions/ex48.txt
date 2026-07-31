@@ -1,0 +1,4 @@
+with open('camp.txt', 'w') as f:
+    f.write('Setting up camp')
+with open('camp.txt', 'r') as f:
+    print(f.read())

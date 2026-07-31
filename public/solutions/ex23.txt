@@ -1,0 +1,4 @@
+g = "Hello Jungle!"
+print(len(g))
+print(g[0])
+print(g[:5])

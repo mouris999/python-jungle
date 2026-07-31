@@ -1,0 +1,4 @@
+import re
+text = 'Order #123: 5 tigers, 12 elephants, 30 parrots'
+digits = re.findall(r'\\d+', text)
+print('Found numbers:', digits)

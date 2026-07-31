@@ -1,0 +1,14 @@
+import sqlite3
+conn = sqlite3.connect('jungle.db')
+cursor = conn.cursor()
+cursor.execute('CREATE TABLE animals(name TEXT, habitat_id INTEGER)')
+cursor.execute('CREATE TABLE habitats(id INTEGER, name TEXT)')
+cursor.execute("INSERT INTO habitats VALUES (1, 'Forest'), (2, 'Waterhole')")
+cursor.execute("INSERT INTO animals VALUES ('Tiger', 1), ('Elephant', 2)")
+cursor.execute('''SELECT a.name, h.name FROM animals a 
+                  JOIN habitats h ON a.habitat_id = h.id''')
+results = cursor.fetchall()
+print('Joined results:')
+for r in results:
+    print(f'{r[0]} lives in {r[1]}')
+conn.close()

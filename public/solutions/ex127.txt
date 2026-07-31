@@ -1,0 +1,10 @@
+from functools import partial
+
+def multiply(a, b):
+    return a * b
+
+double = partial(multiply, 2)
+print(double(10))
+print(double(25))
+
+print(partial(multiply, 3)(10))

@@ -1,0 +1,8 @@
+n = 10
+f = 3.5
+nm = "Green Canopy"
+b = True
+print(type(n))
+print(type(f))
+print(type(nm))
+print(type(b))

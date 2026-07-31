@@ -1,0 +1,15 @@
+sales = [
+    {'product': 'Tiger plush', 'amount': 1500, 'month': 'Jan'},
+    {'product': 'Elephant toy', 'amount': 2200, 'month': 'Jan'},
+    {'product': 'Parrot kite', 'amount': 800, 'month': 'Feb'},
+]
+total = sum(item['amount'] for item in sales)
+avg = total / len(sales)
+monthly = {}
+for item in sales:
+    m = item['month']
+    monthly[m] = monthly.get(m, 0) + item['amount']
+best = max(monthly, key=monthly.get)
+print(f'Total: ${total}')
+print(f'Avg: ${avg:.0f}')
+print(f'Best: {best}')

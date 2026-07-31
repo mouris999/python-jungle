@@ -1,0 +1,13 @@
+class UpperAttrMeta(type):
+    def __new__(cls, name, bases, attrs):
+        upper_attrs = {}
+        for k, v in attrs.items():
+            if not k.startswith("__"):
+                upper_attrs[k.upper()] = v
+            else:
+                upper_attrs[k] = v
+        return super().__new__(cls, name, bases, upper_attrs)
+class Animal(metaclass=UpperAttrMeta):
+    sound = "Generic"
+print(hasattr(Animal, "SOUND"))
+print(Animal.SOUND)

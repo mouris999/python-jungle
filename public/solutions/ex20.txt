@@ -1,0 +1,6 @@
+coords = (10, 20)
+print(coords[0])
+print(coords[1])
+x, y = coords
+print("x =", x)
+print("y =", y)

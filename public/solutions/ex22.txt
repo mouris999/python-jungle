@@ -1,0 +1,5 @@
+a = {"tiger", "elephant", "monkey"}
+a.add("parrot")
+b = {"monkey", "snake", "parrot"}
+print(a | b)
+print(a & b)

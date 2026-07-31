@@ -1,0 +1,7 @@
+fruits = ["mango", "banana", "papaya", "coconut", "guava"]
+fruits.append("dragonfruit")
+print(fruits)
+fruits.remove("banana")
+print(fruits)
+fruits.sort()
+print(fruits)

@@ -1,0 +1,25 @@
+import random
+
+heads = 0
+tails = 0
+streak = 0
+max_streak = 0
+prev = None
+
+for i in range(100):
+    flip = random.choice(['H', 'T'])
+    if flip == 'H':
+        heads += 1
+    else:
+        tails += 1
+    if flip == prev:
+        streak += 1
+        max_streak = max(max_streak, streak)
+    else:
+        streak = 1
+    prev = flip
+
+print(f'Heads: {heads}')
+print(f'Tails: {tails}')
+print(f'Longest streak: {max_streak}')
+print(f'Heads percentage: {heads}%')

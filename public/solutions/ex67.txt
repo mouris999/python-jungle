@@ -1,0 +1,8 @@
+import pandas as pd
+df = pd.DataFrame({
+    'animal': ['Tiger', 'Elephant', 'Parrot', 'Snake'],
+    'count': [5, 12, 30, 8]
+})
+filtered = df[df['count'] > 5]
+print('Animals with count > 5:')
+print(filtered)

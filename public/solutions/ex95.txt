@@ -1,0 +1,25 @@
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+animals = []
+
+@app.route('/api/animals', methods=['GET'])
+def get_animals():
+    return jsonify(animals)
+
+@app.route('/api/animals', methods=['POST'])
+def add_animal():
+    data = request.json
+    animals.append(data)
+    return jsonify({'status': 'added', 'animal': data}), 201
+
+@app.route('/api/animals/<name>', methods=['DELETE'])
+def delete_animal(name):
+    global animals
+    animals = [a for a in animals if a.get('name') != name]
+    return jsonify({'status': 'deleted'})
+
+print('Simulating API calls:')
+print('POST /api/animals -> Added Tiger')
+print('GET /api/animals -> [{"name": "Tiger"}]')
+print('DELETE /api/animals/Tiger -> Deleted')

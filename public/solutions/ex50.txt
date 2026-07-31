@@ -1,0 +1,15 @@
+class Jungle:
+    def __init__(self, n, t):
+        self.n = n
+        self.t = t
+    @classmethod
+    def from_string(cls, s):
+        n, t = s.split("-")
+        return cls(n, int(t))
+    @staticmethod
+    def is_tropical(t):
+        return t > 20
+j = Jungle.from_string("Amazon-35")
+print(j.n)
+print(Jungle.is_tropical(35))
+print(Jungle.is_tropical(10))

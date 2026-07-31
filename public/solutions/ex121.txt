@@ -1,0 +1,31 @@
+class Pokedex:
+    def __init__(self):
+        self.animals = []
+    
+    def add(self, name, species, habitat):
+        self.animals.append({
+            'name': name,
+            'species': species,
+            'habitat': habitat
+        })
+        print(f'{name} added to Pokedex!')
+    
+    def search(self, name):
+        for a in self.animals:
+            if a['name'].lower() == name.lower():
+                return f"Found: {a['name']} — {a['species']}, Habitat: {a['habitat']}"
+        return f'{name} not found'
+    
+    def list_all(self):
+        print('Pokedex Entries:')
+        for a in self.animals:
+            print(f"  - {a['name']}: {a['species']}")
+
+p = Pokedex()
+p.add('Tiger', 'Panthera tigris', 'Forest')
+p.add('Parrot', 'Ara macao', 'Canopy')
+p.add('Frog', 'Dendrobates', 'Pond')
+p.list_all()
+print(p.search('Tiger'))
+print(p.search('tiger'))
+print(p.search('Dragon'))

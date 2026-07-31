@@ -1,0 +1,7 @@
+import numpy as np
+data = np.array([15, 25, 35, 45, 55])
+print('Mean:', np.mean(data))
+print('Sum:', np.sum(data))
+print('Min:', np.min(data))
+print('Max:', np.max(data))
+print('Std:', np.std(data))

@@ -1,0 +1,9 @@
+class SafeDivision:
+    def __enter__(self): return self
+    def __exit__(self, typ, val, tb):
+        if typ is ZeroDivisionError:
+            print("Caught division by zero!")
+            return True
+with SafeDivision():
+    result = 10 / 0
+print("Program continues")

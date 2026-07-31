@@ -1,0 +1,8 @@
+import pandas as pd
+df = pd.DataFrame({
+    'habitat': ['Forest', 'Forest', 'Canopy', 'Canopy'],
+    'animals': [5, 3, 10, 8]
+})
+grouped = df.groupby('habitat')['animals'].sum()
+print('Animals per habitat:')
+print(grouped)

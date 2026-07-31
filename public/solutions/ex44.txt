@@ -1,0 +1,10 @@
+def jungle_decorator(func):
+    def wrapper():
+        print("🌿 Entering the jungle...")
+        func()
+        print("🌿 Leaving the jungle...")
+    return wrapper
+@jungle_decorator
+def explore():
+    print("Exploring deep in the jungle!")
+explore()

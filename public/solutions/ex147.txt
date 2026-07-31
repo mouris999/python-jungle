@@ -1,0 +1,10 @@
+import random
+secret = random.randint(1, 10)
+for a in range(5):
+    g = int(input(f'Guess {a+1}/5: '))
+    if g == secret:
+        print(f'Got it in {a+1}!')
+        break
+    print('Lower!' if g > secret else 'Higher!')
+else:
+    print(f'Number was {secret}')

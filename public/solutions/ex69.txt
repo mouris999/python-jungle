@@ -1,0 +1,4 @@
+print('GET /api/animals')
+print('Status: 200 OK')
+response = {'animals': ['Tiger', 'Elephant', 'Parrot'], 'count': 3}
+print('Response:', response)

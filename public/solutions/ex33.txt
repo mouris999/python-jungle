@@ -1,0 +1,7 @@
+import json
+animals = {'mammals': ['tiger', 'elephant'], 'birds': ['parrot', 'eagle']}
+with open('animals.json', 'w') as f:
+    json.dump(animals, f)
+with open('animals.json', 'r') as f:
+    data = json.load(f)
+print(data)

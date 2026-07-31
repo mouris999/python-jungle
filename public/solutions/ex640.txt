@@ -1,0 +1,9 @@
+class JungleFile:
+    def __init__(self, name): self.name = name
+    def __enter__(self):
+        print(f"Opening {self.name}")
+        return self
+    def __exit__(self, *a):
+        print(f"Closing {self.name}")
+with JungleFile("data.txt") as f:
+    print("Working with file")

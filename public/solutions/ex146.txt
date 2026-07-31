@@ -1,0 +1,22 @@
+class AnimalShelterAPI:
+    def __init__(self):
+        self.animals = []
+        self.next_id = 1
+    def get_all(self):
+        return {'animals': self.animals, 'count': len(self.animals)}
+    def add(self, name, species):
+        a = {'id': self.next_id, 'name': name, 'species': species}
+        self.animals.append(a)
+        self.next_id += 1
+        return {'status': 'created', 'animal': a}
+    def delete(self, aid):
+        for a in self.animals:
+            if a['id'] == aid:
+                self.animals.remove(a)
+                return {'status': 'deleted'}
+        return {'status': 'not found'}
+
+api = AnimalShelterAPI()
+print(api.add('Tiger', 'Panthera'))
+print(api.get_all())
+print(api.delete(1))

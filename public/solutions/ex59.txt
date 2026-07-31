@@ -1,0 +1,12 @@
+template = '''
+<!DOCTYPE html>
+<html>
+<head><title>Jungle Adventures</title></head>
+<body>
+<h1>Explore the wild!</h1>
+<p>Welcome to our jungle adventure!</p>
+</body>
+</html>
+'''
+print('Rendered HTML:')
+print(template)

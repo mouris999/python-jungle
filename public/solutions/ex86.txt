@@ -1,0 +1,13 @@
+from sklearn.tree import DecisionTreeClassifier
+
+X = [[0, 0], [0, 1], [1, 0], [1, 1]]
+y = ['herbivore', 'carnivore', 'omnivore', 'carnivore']
+
+clf = DecisionTreeClassifier()
+clf.fit(X, y)
+
+pred = clf.predict([[1, 0]])
+print(f'Prediction: {pred[0]}')
+
+pred2 = clf.predict([[0, 1]])
+print(f'Prediction: {pred2[0]}')

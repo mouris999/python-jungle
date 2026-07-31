@@ -1,0 +1,14 @@
+import random
+secret = random.randint(1, 100)
+guess = None
+attempts = 0
+
+while guess != secret:
+    guess = int(input('Guess (1-100): '))
+    attempts += 1
+    if guess < secret:
+        print('Higher!')
+    elif guess > secret:
+        print('Lower!')
+
+print(f'You got it in {attempts} attempts!')

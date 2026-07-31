@@ -1,0 +1,6 @@
+import re
+data = 'Monkey-3, Snake-8, Frog-2'
+pattern = r'(\\w+)-(\\d+)'
+matches = re.findall(pattern, data)
+for name, count in matches:
+    print(f'Animal: {name}, Count: {count}')

@@ -1,0 +1,29 @@
+class AnimalShelter:
+    def __init__(self):
+        self.animals = []
+        self.adopted = []
+    
+    def add_animal(self, name, species):
+        self.animals.append({'name': name, 'species': species})
+        print(f'Added {name} the {species}')
+    
+    def adopt(self, name):
+        for a in self.animals:
+            if a['name'] == name:
+                self.animals.remove(a)
+                self.adopted.append(a)
+                print(f'{name} was adopted!')
+                return
+        print(f'{name} not found')
+    
+    def list_available(self):
+        print('Available animals:')
+        for a in self.animals:
+            print(f'  - {a["name"]} ({a["species"]})')
+
+shelter = AnimalShelter()
+shelter.add_animal('Luna', 'Dog')
+shelter.add_animal('Milo', 'Cat')
+shelter.list_available()
+shelter.adopt('Luna')
+shelter.list_available()

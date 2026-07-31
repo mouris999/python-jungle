@@ -1,0 +1,6 @@
+animal = {"name": "Toucan", "species": "Ramphastos", "age": 5, "habitat": "Rainforest"}
+animal["diet"] = "Omnivore"
+del animal["age"]
+print(list(animal.keys()))
+print(list(animal.values()))
+print(list(animal.items()))

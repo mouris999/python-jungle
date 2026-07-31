@@ -1,0 +1,10 @@
+import sqlite3
+conn = sqlite3.connect('jungle.db')
+cursor = conn.cursor()
+cursor.execute('CREATE TABLE animals(name TEXT, species TEXT)')
+cursor.execute("INSERT INTO animals VALUES ('Tiger', 'Panthera tigris')")
+conn.commit()
+cursor.execute('SELECT * FROM animals')
+result = cursor.fetchone()
+print('Query result:', result)
+conn.close()

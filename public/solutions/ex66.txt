@@ -1,0 +1,10 @@
+print('Reading CSV simulation:')
+csv_data = '''animal,count,location
+Tiger,5,River
+Elephant,12,Waterhole
+Parrot,30,Canopy'''
+print('CSV content loaded:')
+print(csv_data)
+print('\
+DataFrame shape: 3 rows x 3 columns')
+print('Columns: animal, count, location')
