@@ -112,12 +112,16 @@ html.pj-cursor-on,html.pj-cursor-on *{cursor:none !important}
 .pj-hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:10px 0}
 @media (max-width:600px){#pjPanel{width:calc(100vw - 24px)}}
 /* ---- accessibility overrides ---- */
-html.pj-hc{filter:contrast(1.15) brightness(1.03)}
-html.pj-focus *{outline-color:#FFD700}
-html.pj-focus :focus{outline:2px solid #FFD700;outline-offset:2px}
+html.pj-hc{filter:contrast(1.4) brightness(1.06) saturate(1.25)}
+html.pj-hc body{background:#000}
+html.pj-hc .btn,html.pj-hc .lang-card,html.pj-hc .topic,html.pj-hc .topics-table td{border-color:var(--bright-yellow) !important}
+html.pj-focus *{outline-color:#FFD700 !important}
+html.pj-focus :focus{outline:2px solid #FFD700 !important;outline-offset:2px !important}
 html.pj-rd .lesson-left,html.pj-rd .hero,html.pj-rd .topics-section,html.pj-rd .modal{max-width:760px;margin-left:auto;margin-right:auto}
 html.pj-rd{filter:none !important}
 html.pj-dys .lesson-left,html.pj-dys .hero,html.pj-dys .sub-banner,html.pj-dys p,html.pj-dys li,html.pj-dys .t-name{font-family:'OpenDyslexic','Comic Sans MS','Comic Sans',cursive !important;letter-spacing:.02em;line-height:1.8}
+html.pj-rm *,html.pj-rm *::before,html.pj-rm *::after{animation-duration:.01s !important;animation-iteration-count:1 !important;transition-duration:.01s !important}
+html.pj-rm #pjCursorCanvas,html.pj-rm #pjBG{display:none !important}
 /* ---- colorblind filters ---- */
 html.pj-cb-protanopia{filter:url(#pjCbProtanopia)}
 html.pj-cb-deuteranopia{filter:url(#pjCbDeuteranopia)}
@@ -302,7 +306,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     ctx.clearRect(0, 0, bgCv.width, bgCv.height);
     bgCv.style.display = 'block';
     var W2 = W.innerWidth, H2 = W.innerHeight;
-    var n = Math.round((W2 * H2) / 18000 * SET.bg.performance ? 0.3 : 1);
+    var n = Math.round((W2 * H2) / 18000 * (SET.bg.performance ? 0.3 : 1));
     n = Math.min(60, Math.max(12, n));
     var i, p;
     if (kind === 'leaves') {
@@ -318,7 +322,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
       for (i = 0; i < n * 0.7; i++) bgParticles.push({ x: Math.random() * W2, y: Math.random() * H2, s: 1 + Math.random() * 2.5, vy: -0.1 + Math.random() * 0.3, vx: -0.2 + Math.random() * 0.4, ph: Math.random() * Math.PI * 2, sp: 0.02 + Math.random() * 0.04, type: 'fly' });
       tickBg();
     } else if (kind === 'stars') {
-      for (i = 0; i < n * 1.2; i++) bgParticles.push({ x: Math.random() * W2, y: Math.random() * H2, s: 0.5 + Math.random() * 1.6, ph: Math.random() * Math.PI * 2, sp: 0.01 + Math.random() * 0.03, type: 'star' });
+      for (i = 0; i < n * 1.2; i++) bgParticles.push({ x: Math.random() * W2, y: Math.random() * H2, s: 1 + Math.random() * 2.5, ph: Math.random() * Math.PI * 2, sp: 0.01 + Math.random() * 0.03, type: 'star' });
       tickBg();
     } else if (kind === 'clouds') {
       for (i = 0; i < 4; i++) bgParticles.push({ x: Math.random() * W2, y: 0.05 * H2 + Math.random() * 0.5 * H2, s: 30 + Math.random() * 40, vx: 0.15 + Math.random() * 0.25, type: 'cloud' });
@@ -372,8 +376,11 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         ctx.shadowBlur = 0;
       } else if (kind === 'stars') {
         p.ph += p.sp;
-        ctx.fillStyle = 'rgba(255,255,255,' + (0.3 + 0.7 * Math.abs(Math.sin(p.ph))).toFixed(2) + ')';
+        var sa = 0.45 + 0.55 * Math.abs(Math.sin(p.ph));
+        ctx.fillStyle = 'rgba(255,255,255,' + sa.toFixed(2) + ')';
+        ctx.shadowColor = 'rgba(255,255,255,' + (sa * 0.6).toFixed(2) + ')'; ctx.shadowBlur = 8;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
       } else if (kind === 'clouds') {
         p.x += p.vx;
         if (p.x - p.s > W2) p.x = -p.s;
@@ -1194,7 +1201,13 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
       case 'cursorEn': c.enabled = val; if (val) { initCursor(); } else { destroyCursor(); } break;
       case 'style': c.style = val; break;
       case 'size': c.size = parseFloat(val); curSize = c.size; break;
-      case 'largeCursor': a11yLarge = val; if (val) { c.size = Math.max(c.size, 56); curSize = c.size; } html.classList.toggle('pj-lc', val && c.enabled); break;
+      case 'largeCursor':
+        a11yLarge = val;
+        html.classList.toggle('pj-lc', val && c.enabled);
+        if (val && !a11yPrevSize) { a11yPrevSize = c.size; c.size = Math.max(c.size, 56); }
+        else if (!val && a11yPrevSize) { c.size = a11yPrevSize; a11yPrevSize = 0; }
+        curSize = c.size;
+        break;
       case 'speed': case 'trail': case 'trailColor': case 'trailOpacity': case 'glow': case 'density': case 'physics':
         c[key] = key === 'speed' || key === 'density' || key === 'physics' || key === 'trailOpacity' ? parseFloat(val) : key === 'trail' ? parseInt(val, 10) : val;
         break;
@@ -1206,7 +1219,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
       case 'highContrast': a11yHC = val; html.classList.toggle('pj-hc', val); break;
       case 'focusMode': a11yFocus = val; html.classList.toggle('pj-focus', val); break;
       case 'readingMode': a11yRead = val; html.classList.toggle('pj-rd', val); break;
-      case 'dyslexiaFont': a11yDys = val; html.classList.toggle('pj-dys', val); break;
+      case 'dyslexiaFont': a11yDys = val; html.classList.toggle('pj-dys', val); if (val) loadDysFont(); break;
       case 'colorBlind': a11yCB = val; html.classList.remove('pj-cb-protanopia', 'pj-cb-deuteranopia', 'pj-cb-tritanopia'); if (val !== 'none') html.classList.add('pj-cb-' + val); break;
       case 'soundEn': s.enabled = val; if (!val) stopNature(); else startNature(s.nature); break;
       case 'click': s.click = val; break;
@@ -1277,7 +1290,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     html.setAttribute('data-pj-layout', l.density);
     html.style.setProperty('--pj-sidebar', l.sidebarWidth + 'px');
   }
-  var a11yReduce = false, a11yHC = false, a11yLarge = false, a11yFocus = false, a11yRead = false, a11yDys = false, a11yCB = 'none';
+  var a11yReduce = false, a11yHC = false, a11yLarge = false, a11yFocus = false, a11yRead = false, a11yDys = false, a11yCB = 'none', a11yPrevSize = 0;
 
   /* ---------- FPS / stats ---------- */
   var fpsEl, statsEl, fpsFrames = 0, fpsVal = 0;
@@ -1409,10 +1422,22 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     html.classList.toggle('pj-focus', a11yFocus = SET.a11y.focusMode);
     html.classList.toggle('pj-rd', a11yRead = SET.a11y.readingMode);
     html.classList.toggle('pj-dys', a11yDys = SET.a11y.dyslexiaFont);
+    if (SET.a11y.dyslexiaFont) loadDysFont();
     html.classList.toggle('pj-rm', a11yReduce = SET.a11y.reduceMotion || REDUCED);
     html.classList.remove('pj-cb-protanopia', 'pj-cb-deuteranopia', 'pj-cb-tritanopia');
     if (SET.a11y.colorBlind !== 'none') { html.classList.add('pj-cb-' + SET.a11y.colorBlind); a11yCB = SET.a11y.colorBlind; }
+    a11yLarge = SET.a11y.largeCursor;
+    html.classList.toggle('pj-lc', a11yLarge && SET.cursor.enabled);
+    if (a11yLarge) { if (!a11yPrevSize) a11yPrevSize = SET.cursor.size; if (SET.cursor.size < 56) SET.cursor.size = 56; }
+    else if (a11yPrevSize) { SET.cursor.size = a11yPrevSize; a11yPrevSize = 0; }
     curSize = c.size;
+  }
+  function loadDysFont() {
+    if (!D.getElementById('pjDysLink')) {
+      var l = D.createElement('link'); l.id = 'pjDysLink'; l.rel = 'stylesheet';
+      l.href = 'https://fonts.googleapis.com/css2?family=OpenDyslexic&display=swap';
+      D.head.appendChild(l);
+    }
   }
   function boot() {
     buildPanel();
