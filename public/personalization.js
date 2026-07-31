@@ -1,5 +1,5 @@
 /* ============================================================
-   Python Jungle — Personalization System (v3)
+   Python Jungle â€” Personalization System (v3)
    Modular IIFE: animated coconut cursor, settings panel,
    themes, particles, accessibility, sounds, background FX,
    account sync (Firebase RTDB REST).
@@ -192,7 +192,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   D.body.appendChild(svg);
 
   /* ============================================================
-     Audio (WebAudio synthesized — no assets)
+     Audio (WebAudio synthesized â€” no assets)
      ============================================================ */
   var AC = null, audioInit = false;
   function ac() {
@@ -851,7 +851,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   function buildPanel() {
     gear = D.createElement('div');
     gear.id = 'pjGear';
-    gear.innerHTML = '⚙';
+    gear.innerHTML = 'âš™';
     gear.title = 'Settings (Ctrl+,)';
     gear.addEventListener('click', function (e) { e.stopPropagation(); togglePanel(); });
     D.body.appendChild(gear);
@@ -864,7 +864,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   }
 
   function tabsHTML() {
-    var tabs = [['appearance', '🎨 Appearance'], ['cursor', '🌴 Cursor'], ['a11y', '♿ Access'], ['sound', '🔊 Sound'], ['bg', '🌌 Background'], ['theme', '🛠 Theme Creator'], ['layout', '📐 Layout'], ['adv', '💾 Advanced'], ['dev', '📊 Dev']];
+    var tabs = [['appearance', 'ðŸŽ¨ Appearance'], ['cursor', 'ðŸŒ´ Cursor'], ['a11y', 'â™¿ Access'], ['sound', 'ðŸ”Š Sound'], ['bg', 'ðŸŒŒ Background'], ['theme', 'ðŸ›  Theme Creator'], ['layout', 'ðŸ“ Layout'], ['adv', 'ðŸ’¾ Advanced'], ['dev', 'ðŸ“Š Dev']];
     var h = '<div class="pj-tabs">';
     tabs.forEach(function (t) {
       h += '<span class="pj-tab' + (t[0] === activeTab ? ' act' : '') + '" data-pjtab="' + t[0] + '">' + t[1] + '</span>';
@@ -926,7 +926,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   function secCursor() {
     var c = SET.cursor;
     var h = '<div class="pj-sec" data-pjsec="cursor">';
-    h += row('Enable Cursor', 'cursorEn', '<span class="pj-switch"><input type="checkbox" data-pj="cursorEn" id="pjCEn"' + (c.enabled ? ' checked' : '') + '><i></i></span>');
+    h += row('Enable Cursor', 'cursorEn', '<label class="pj-switch"><input type="checkbox" data-pj="cursorEn" id="pjCEn"' + (c.enabled ? ' checked' : '') + '><i></i></label>');
     h += row('Cursor Style', 'style', '<select class="pj-sel" data-pj="style">' + CURSOR_STYLES.map(function (s) { return '<option value="' + s[0] + '"' + (c.style === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select>');
     h += slider('size', 28, 80, 2, 'px', function () { return c.size; });
     h += slider('speed', 0.05, 0.4, 0.01, '', function () { return Math.round(c.speed * 100) / 100; });
@@ -936,18 +936,18 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     h += slider('glow', 0, 40, 2, '', function () { return c.glow; });
     h += slider('density', 0.1, 1.5, 0.1, '', function () { return c.density; });
     h += slider('physics', 0, 1, 0.1, '', function () { return c.physics; });
-    h += row('Click Animation', 'clickAnim', '<span class="pj-switch"><input type="checkbox" data-pj="clickAnim" id="pjCCl"' + (c.clickAnim ? ' checked' : '') + '><i></i></span>');
-    h += row('Hover Animation', 'hoverAnim', '<span class="pj-switch"><input type="checkbox" data-pj="hoverAnim" id="pjCHo"' + (c.hoverAnim ? ' checked' : '') + '><i></i></span>');
-    h += row('Idle Animation', 'idleAnim', '<span class="pj-switch"><input type="checkbox" data-pj="idleAnim" id="pjCId"' + (c.idleAnim ? ' checked' : '') + '><i></i></span>');
-    h += row('Cursor Shadow', 'shadow', '<span class="pj-switch"><input type="checkbox" data-pj="shadow" id="pjCSh"' + (c.shadow ? ' checked' : '') + '><i></i></span>');
-    h += row('Custom Image', 'customImg', '<button class="pj-btn" data-pj-action="pickCursorImg">⬆ Upload</button> <button class="pj-btn danger" data-pj-action="removeCursorImg">✕ Remove</button>');
+    h += row('Click Animation', 'clickAnim', '<label class="pj-switch"><input type="checkbox" data-pj="clickAnim" id="pjCCl"' + (c.clickAnim ? ' checked' : '') + '><i></i></label>');
+    h += row('Hover Animation', 'hoverAnim', '<label class="pj-switch"><input type="checkbox" data-pj="hoverAnim" id="pjCHo"' + (c.hoverAnim ? ' checked' : '') + '><i></i></label>');
+    h += row('Idle Animation', 'idleAnim', '<label class="pj-switch"><input type="checkbox" data-pj="idleAnim" id="pjCId"' + (c.idleAnim ? ' checked' : '') + '><i></i></label>');
+    h += row('Cursor Shadow', 'shadow', '<label class="pj-switch"><input type="checkbox" data-pj="shadow" id="pjCSh"' + (c.shadow ? ' checked' : '') + '><i></i></label>');
+    h += row('Custom Image', 'customImg', '<button class="pj-btn" data-pj-action="pickCursorImg">â¬† Upload</button> <button class="pj-btn danger" data-pj-action="removeCursorImg">âœ• Remove</button>');
     h += '<input type="file" id="pjCursorFile" accept="image/*" style="display:none">';
     h += '<div class="pj-note">Custom cursor hides the default pointer. Touch devices auto-disable it.</div></div>';
     return h;
   }
   function secA11y() {
     var a = SET.a11y;
-    function sw(id, lbl) { return row(lbl, id, '<span class="pj-switch"><input type="checkbox" data-pj="' + id + '"' + (a[id] ? ' checked' : '') + '><i></i></span>'); }
+    function sw(id, lbl) { return row(lbl, id, '<label class="pj-switch"><input type="checkbox" data-pj="' + id + '"' + (a[id] ? ' checked' : '') + '><i></i></label>'); }
     var h = '<div class="pj-sec" data-pjsec="a11y">';
     h += sw('reduceMotion', 'Reduce Motion');
     h += sw('highContrast', 'High Contrast');
@@ -962,13 +962,13 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   function secSound() {
     var s = SET.sound;
     var h = '<div class="pj-sec" data-pjsec="sound">';
-    h += row('UI Sounds', 'soundEn', '<span class="pj-switch"><input type="checkbox" data-pj="soundEn" id="pjSEn"' + (s.enabled ? ' checked' : '') + '><i></i></span>');
-    h += row('Click Sound', 'click', '<span class="pj-switch"><input type="checkbox" data-pj="click" id="pjSCk"' + (s.click ? ' checked' : '') + '><i></i></span>');
-    h += row('Hover Sound', 'hover', '<span class="pj-switch"><input type="checkbox" data-pj="hover" id="pjSHo"' + (s.hover ? ' checked' : '') + '><i></i></span>');
-    h += row('Mute All', 'muted', '<span class="pj-switch"><input type="checkbox" data-pj="muted" id="pjSMu"' + (s.muted ? ' checked' : '') + '><i></i></span>');
+    h += row('UI Sounds', 'soundEn', '<label class="pj-switch"><input type="checkbox" data-pj="soundEn" id="pjSEn"' + (s.enabled ? ' checked' : '') + '><i></i></label>');
+    h += row('Click Sound', 'click', '<label class="pj-switch"><input type="checkbox" data-pj="click" id="pjSCk"' + (s.click ? ' checked' : '') + '><i></i></label>');
+    h += row('Hover Sound', 'hover', '<label class="pj-switch"><input type="checkbox" data-pj="hover" id="pjSHo"' + (s.hover ? ' checked' : '') + '><i></i></label>');
+    h += row('Mute All', 'muted', '<label class="pj-switch"><input type="checkbox" data-pj="muted" id="pjSMu"' + (s.muted ? ' checked' : '') + '><i></i></label>');
     h += slider('volume', 0, 100, 5, '%', function () { return s.volume; });
     h += '<h3>Nature Ambience</h3>' + row('Sound', 'nature', '<select class="pj-sel" data-pj="nature">' + NATURE.map(function (n) { return '<option value="' + n[0] + '"' + (s.nature === n[0] ? ' selected' : '') + '>' + n[1] + '</option>'; }).join('') + '</select>');
-    h += '<button class="pj-btn" data-pj-action="testSound">▶ Test Sound</button>';
+    h += '<button class="pj-btn" data-pj-action="testSound">â–¶ Test Sound</button>';
     h += '</div>';
     return h;
   }
@@ -976,7 +976,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     var b = SET.bg;
     var h = '<div class="pj-sec" data-pjsec="bg">';
     h += '<h3>Animated Background</h3>' + row('Effect', 'effect', '<select class="pj-sel" data-pj="effect">' + BGEFF.map(function (e) { return '<option value="' + e[0] + '"' + (b.effect === e[0] ? ' selected' : '') + '>' + e[1] + '</option>'; }).join('') + '</select>');
-    h += row('Performance Mode', 'performance', '<span class="pj-switch"><input type="checkbox" data-pj="performance" id="pjBPe"' + (b.performance ? ' checked' : '') + '><i></i></span>');
+    h += row('Performance Mode', 'performance', '<label class="pj-switch"><input type="checkbox" data-pj="performance" id="pjBPe"' + (b.performance ? ' checked' : '') + '><i></i></label>');
     h += '<div class="pj-note">Fireflies appear automatically at night or in Midnight/AMOLED themes.</div></div>';
     return h;
   }
@@ -988,12 +988,12 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
       h += row(c[1], 'ct_' + c[0], '<input type="color" class="pj-col" data-pj="ct_' + c[0] + '" value="' + (ct[c[0]] || '#0D1B0D') + '">');
     });
     h += '<div style="display:flex;flex-wrap:wrap;gap:4px">';
-    h += '<button class="pj-btn" data-pj-action="saveTheme">💾 Save Theme</button>';
-    h += '<button class="pj-btn" data-pj-action="applyTheme">▶ Apply</button>';
-    h += '<button class="pj-btn" data-pj-action="exportTheme">⬇ Export</button>';
-    h += '<button class="pj-btn" data-pj-action="importTheme">⬆ Import</button>';
-    h += '<button class="pj-btn" data-pj-action="shareTheme">🔗 Share</button>';
-    h += '<button class="pj-btn danger" data-pj-action="resetTheme">↺ Reset</button>';
+    h += '<button class="pj-btn" data-pj-action="saveTheme">ðŸ’¾ Save Theme</button>';
+    h += '<button class="pj-btn" data-pj-action="applyTheme">â–¶ Apply</button>';
+    h += '<button class="pj-btn" data-pj-action="exportTheme">â¬‡ Export</button>';
+    h += '<button class="pj-btn" data-pj-action="importTheme">â¬† Import</button>';
+    h += '<button class="pj-btn" data-pj-action="shareTheme">ðŸ”— Share</button>';
+    h += '<button class="pj-btn danger" data-pj-action="resetTheme">â†º Reset</button>';
     h += '</div><input type="file" id="pjThemeFile" accept=".json" style="display:none">';
     h += '<div class="pj-note">Custom theme applies instantly to background, cards, buttons & text.</div></div>';
     return h;
@@ -1003,30 +1003,30 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     var h = '<div class="pj-sec" data-pjsec="layout">';
     h += slider('sidebarWidth', 180, 340, 10, 'px', function () { return l.sidebarWidth; });
     h += row('Density', 'density', '<select class="pj-sel" data-pj="density"><option value="compact"' + (l.density === 'compact' ? ' selected' : '') + '>Compact</option><option value="comfortable"' + (l.density === 'comfortable' ? ' selected' : '') + '>Comfortable</option><option value="spacious"' + (l.density === 'spacious' ? ' selected' : '') + '>Spacious</option></select>');
-    h += row('Corners', 'rounded', '<span class="pj-switch"><input type="checkbox" data-pj="rounded" id="pjLRd"' + (l.rounded ? ' checked' : '') + '><i></i></span>');
+    h += row('Corners', 'rounded', '<label class="pj-switch"><input type="checkbox" data-pj="rounded" id="pjLRd"' + (l.rounded ? ' checked' : '') + '><i></i></label>');
     h += row('Scrollbar', 'scrollbar', '<select class="pj-sel" data-pj="scrollbar"><option value="auto"' + (l.scrollbar === 'auto' ? ' selected' : '') + '>Auto</option><option value="thin"' + (l.scrollbar === 'thin' ? ' selected' : '') + '>Thin</option><option value="none"' + (l.scrollbar === 'none' ? ' selected' : '') + '>Hidden</option></select>');
     h += '</div>';
     return h;
   }
   function secAdv() {
     var h = '<div class="pj-sec" data-pjsec="adv">';
-    h += '<button class="pj-btn" data-pj-action="exportAll">⬇ Export Settings</button>';
-    h += '<button class="pj-btn" data-pj-action="importAll">⬆ Import Settings</button>';
+    h += '<button class="pj-btn" data-pj-action="exportAll">â¬‡ Export Settings</button>';
+    h += '<button class="pj-btn" data-pj-action="importAll">â¬† Import Settings</button>';
     h += '<input type="file" id="pjAllFile" accept=".json" style="display:none">';
-    h += '<button class="pj-btn" data-pj-action="copyShare">🔗 Copy Share Link</button>';
-    h += '<button class="pj-btn" data-pj-action="syncNow">☁ Sync Now</button>';
-    h += '<div class="pj-note" id="pjSyncNote">' + (sync.uid ? '☁ Synced with ' + sync.email : '☁ Sign in to sync settings across devices') + '</div>';
-    h += '<button class="pj-btn danger" data-pj-action="resetAll" style="display:block;margin-top:8px;width:100%">🗑 Reset Everything</button>';
+    h += '<button class="pj-btn" data-pj-action="copyShare">ðŸ”— Copy Share Link</button>';
+    h += '<button class="pj-btn" data-pj-action="syncNow">â˜ Sync Now</button>';
+    h += '<div class="pj-note" id="pjSyncNote">' + (sync.uid ? 'â˜ Synced with ' + sync.email : 'â˜ Sign in to sync settings across devices') + '</div>';
+    h += '<button class="pj-btn danger" data-pj-action="resetAll" style="display:block;margin-top:8px;width:100%">ðŸ—‘ Reset Everything</button>';
     h += '<div class="pj-note">Settings auto-save to this browser. Use export/import to move them between devices.</div></div>';
     return h;
   }
   function secDev() {
     var d = SET.dev;
     var h = '<div class="pj-sec" data-pjsec="dev">';
-    h += row('FPS Monitor', 'fps', '<span class="pj-switch"><input type="checkbox" data-pj="fps" id="pjDFp"' + (d.fps ? ' checked' : '') + '><i></i></span>');
-    h += row('Performance Stats', 'stats', '<span class="pj-switch"><input type="checkbox" data-pj="stats" id="pjDSt"' + (d.stats ? ' checked' : '') + '><i></i></span>');
-    h += '<button class="pj-btn" data-pj-action="testCursor">🖱 Test Cursor</button>';
-    h += '<button class="pj-btn" data-pj-action="themeInfo">🎨 Theme Inspector</button>';
+    h += row('FPS Monitor', 'fps', '<label class="pj-switch"><input type="checkbox" data-pj="fps" id="pjDFp"' + (d.fps ? ' checked' : '') + '><i></i></label>');
+    h += row('Performance Stats', 'stats', '<label class="pj-switch"><input type="checkbox" data-pj="stats" id="pjDSt"' + (d.stats ? ' checked' : '') + '><i></i></label>');
+    h += '<button class="pj-btn" data-pj-action="testCursor">ðŸ–± Test Cursor</button>';
+    h += '<button class="pj-btn" data-pj-action="themeInfo">ðŸŽ¨ Theme Inspector</button>';
     h += '<div class="pj-note" id="pjDevInfo"></div></div>';
     return h;
   }
@@ -1304,7 +1304,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     setInterval(function () {
       fpsVal = fpsFrames;
       fpsFrames = 0;
-      if (SET.dev.fps) fpsEl.textContent = 'FPS: ' + fpsVal + (fpsVal >= 55 ? ' ✓' : ' ⚠');
+      if (SET.dev.fps) fpsEl.textContent = 'FPS: ' + fpsVal + (fpsVal >= 55 ? ' âœ“' : ' âš ');
       if (SET.dev.stats) statsEl.textContent = 'px: ' + parts.length + ' | bg: ' + bgParticles.length + ' | DPR: ' + DPR + ' | Q: ' + QUALITY;
     }, 1000);
   }
@@ -1376,9 +1376,9 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
           if (SET.cursor.enabled && !COARSE) initCursor(); else if (!SET.cursor.enabled) destroyCursor();
           bgInit(SET.bg.effect);
           rebuildSwatches();
-          updateSyncNote('☁ Loaded settings from cloud');
+          updateSyncNote('â˜ Loaded settings from cloud');
         }
-      }).catch(function () { updateSyncNote('☁ Sync failed — settings stay local'); });
+      }).catch(function () { updateSyncNote('â˜ Sync failed â€” settings stay local'); });
   }
   function schedulePush() {
     if (!sync.uid) return;
@@ -1395,13 +1395,13 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         headers: { 'Content-Type': 'application/json' }
       });
     }).then(function () { sync.last = Date.now(); updateSyncNote(); })
-      .catch(function () { updateSyncNote('☁ Sync failed — settings stay local'); })
+      .catch(function () { updateSyncNote('â˜ Sync failed â€” settings stay local'); })
       .then(function () { sync.busy = false; });
   }
   function updateSyncNote(msg) {
     var el = panel && panel.querySelector('#pjSyncNote');
     if (!el) return;
-    el.textContent = msg || (sync.uid ? '☁ Synced with ' + sync.email + ' — settings follow you across devices' : '☁ Not synced — sign in to sync settings across devices');
+    el.textContent = msg || (sync.uid ? 'â˜ Synced with ' + sync.email + ' â€” settings follow you across devices' : 'â˜ Not synced â€” sign in to sync settings across devices');
   }
 
   /* ---------- boot ---------- */
