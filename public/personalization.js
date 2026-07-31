@@ -1,7 +1,8 @@
 /* ============================================================
-   Python Jungle — Personalization System (v2)
+   Python Jungle — Personalization System (v3)
    Modular IIFE: animated coconut cursor, settings panel,
-   themes, particles, accessibility, sounds, background FX.
+   themes, particles, accessibility, sounds, background FX,
+   account sync (Firebase RTDB REST).
    Zero dependencies. Auto-saves to localStorage.
    ============================================================ */
 (function () {
@@ -14,7 +15,7 @@
 
   /* ---------- defaults ---------- */
   var DEF = {
-    cursor: { enabled: true, size: 44, style: 'coconut', speed: 0.14, trail: 6, trailColor: '#FFD700', trailOpacity: 0.35, glow: 14, density: 0.5, clickAnim: true, hoverAnim: true, idleAnim: true, physics: 0.6, shadow: true },
+    cursor: { enabled: true, size: 44, style: 'coconut', speed: 0.14, trail: 6, trailColor: '#FFD700', trailOpacity: 0.35, glow: 14, density: 0.5, clickAnim: true, hoverAnim: true, idleAnim: true, physics: 0.6, shadow: true, customImg: null },
     appearance: { theme: 'jungle', accent: '#FFD700', accent2: '#FFA500', font: 'system', fontSize: 100, letterSpacing: 0, lineHeight: 1.6, radius: 10, shadow: 40, glass: 50, animSpeed: 100 },
     a11y: { reduceMotion: false, highContrast: false, largeCursor: false, focusMode: false, colorBlind: 'none', readingMode: false, dyslexiaFont: false },
     sound: { enabled: true, click: true, hover: true, nature: 'none', volume: 70, muted: false },
@@ -24,19 +25,22 @@
     customTheme: null
   };
   var SET = load();
-  function save() { try { localStorage.setItem('pj_settings', JSON.stringify(SET)); } catch (e) {} }
+  function save() { try { localStorage.setItem('pj_settings', JSON.stringify(SET)); } catch (e) {} if (sync.uid && !sync.applying) schedulePush(); }
   function load() {
     try {
       var s = JSON.parse(localStorage.getItem('pj_settings') || '{}');
-      // deep merge with defaults
-      (function merge(d, s) {
-        Object.keys(d).forEach(function (k) {
-          if (s && typeof s[k] === 'object' && !Array.isArray(s[k]) && d[k] && typeof d[k] === 'object') merge(d[k], s[k]);
-          else if (s && s[k] !== undefined) d[k] = s[k];
-        });
-      })(DEF, s);
+      mergeDeep(DEF, s);
     } catch (e) {}
     return DEF;
+  }
+  function mergeDeep(d, s) {
+    if (!s || typeof s !== 'object') return;
+    Object.keys(d).forEach(function (k) {
+      if (s[k] !== undefined) {
+        if (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k]) && typeof s[k] === 'object' && !Array.isArray(s[k])) mergeDeep(d[k], s[k]);
+        else d[k] = s[k];
+      }
+    });
   }
 
   var REDUCED = W.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -131,6 +135,8 @@ html[data-pj-theme=emerald]{--jungle-green:#00C853;--deep-emerald:#009624;--dark
 html[data-pj-theme=purple]{--jungle-green:#7E57C2;--deep-emerald:#4A148C;--dark-canopy:#14081F;--bright-yellow:#CE93D8;--golden-amber:#AB47BC;--vine-green:#D1C4E9;--text-primary:#F3E5F5;--text-secondary:#CE93D8}
 html[data-pj-theme=light]{--jungle-green:#43A047;--deep-emerald:#2E7D32;--dark-canopy:#F4F7F2;--bright-yellow:#F9A825;--golden-amber:#F57F17;--vine-green:#66BB6A;--text-primary:#1B2A1B;--text-secondary:#4E6650;--cloud-white:#FFFFFF}
 html[data-pj-theme=amoled]{--jungle-green:#1B5E20;--deep-emerald:#0D3B10;--dark-canopy:#000000;--bright-yellow:#FFD700;--golden-amber:#FFA500;--vine-green:#388E3C;--text-primary:#D4D4D4;--text-secondary:#777777}
+html[data-pj-theme=auto]{--jungle-green:#2D8F4E;--deep-emerald:#1A6B3C;--dark-canopy:#0D1B0D;--bright-yellow:#FFD700;--golden-amber:#FFA500;--vine-green:#6ABF69;--text-primary:#E8F0E2;--text-secondary:#A8C89A;--cloud-white:#FFFFFF;background:#0D1B0D}
+@media (prefers-color-scheme: light){html[data-pj-theme=auto]{--jungle-green:#43A047;--deep-emerald:#2E7D32;--dark-canopy:#F4F7F2;--bright-yellow:#F9A825;--golden-amber:#F57F17;--vine-green:#66BB6A;--text-primary:#1B2A1B;--text-secondary:#4E6650;--cloud-white:#FFFFFF;background:#F4F7F2}}
 html[data-pj-theme=ocean],html[data-pj-theme=forest],html[data-pj-theme=sunset],html[data-pj-theme=midnight],html[data-pj-theme=cyberpunk],html[data-pj-theme=minimal],html[data-pj-theme=vintage],html[data-pj-theme=coffee],html[data-pj-theme=emerald],html[data-pj-theme=purple]{background:var(--dark-canopy)}
 /* custom theme */
 html[data-pj-theme=custom]{--jungle-green:var(--c-accent);--deep-emerald:var(--c-accent2);--dark-canopy:var(--c-bg);--bright-yellow:var(--c-accent);--golden-amber:var(--c-accent2);--vine-green:var(--c-accent);--text-primary:var(--c-text);--text-secondary:var(--c-text2);--cloud-white:var(--c-text)}
@@ -332,6 +338,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   function tickBg() {
     var ctx = bgCtx; if (!ctx) return;
     var W2 = W.innerWidth, H2 = W.innerHeight;
+    var p;
     ctx.clearRect(0, 0, bgCv.width, bgCv.height);
     ctx.save();
     ctx.scale(DPR, DPR);
@@ -451,6 +458,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   var parts = [], trailPts = [];
   var raf = 0, running = false;
   var curSize = SET.cursor.size;
+  var customImgEl = null, customImgReady = false;
 
   function initCursor() {
     if (cv || !SET.cursor.enabled || COARSE || REDUCED || SET.a11y.reduceMotion) return;
@@ -578,6 +586,21 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         p.x += p.vx; p.y += p.vy; p.vy += p.gr; p.life--; p.rot += p.vr;
         if (p.life <= 0 || p.y > W.innerHeight) { parts.splice(pi, 1); continue; }
         drawCoconut(p.x, p.y, p.rot, p.s);
+      } else if (p.type === 'bird') {
+        if (Date.now() - lastMoveT < 3000) { parts.splice(pi, 1); continue; }
+        p.a += p.va;
+        p.x = p.cx + Math.cos(p.a) * p.r;
+        p.y = p.cy - Math.sin(p.a) * p.r * 0.45;
+        var flap = Math.sin(now / 130 + p.ph) * 0.7;
+        ctx.strokeStyle = 'rgba(80,95,105,0.75)';
+        ctx.lineWidth = 1.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(-4, -3 - 5 * Math.max(0, flap), -9, -1);
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(4, -3 - 5 * Math.max(0, -flap), 9, -1);
+        ctx.stroke();
       }
     }
 
@@ -595,6 +618,19 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         ctx.fillStyle = lp.c; ctx.globalAlpha = Math.min(1, lp.life / 15);
         ctx.beginPath(); ctx.ellipse(0, 0, lp.s, lp.s * 0.5, 0, 0, Math.PI * 2); ctx.fill();
         ctx.restore(); ctx.globalAlpha = 1;
+      }
+    }
+    // image hover: drop coconuts
+    if (hoverType === 'img' && SET.cursor.hoverAnim && Math.random() < 0.35) {
+      parts.push({ x: mx + (Math.random() - 0.5) * 30, y: my - 10, vx: (Math.random() - 0.5) * 1.6, vy: 1, gr: 0.22, life: 55, type: 'coconut', s: 3.5 + Math.random() * 2.5, rot: Math.random() * 6, vr: 0.15 });
+    }
+    // idle: birds circle overhead
+    var idleNow = Date.now() - lastMoveT > 3000;
+    if (idleNow && SET.cursor.idleAnim) {
+      var nBirds = 0;
+      for (var bi = 0; bi < parts.length; bi++) if (parts[bi].type === 'bird') nBirds++;
+      if (nBirds < 3 && Math.random() < 0.04) {
+        parts.push({ type: 'bird', x: mx, y: my, cx: mx, cy: my - 20, r: 45 + Math.random() * 35, a: Math.random() * 6.28, va: 0.006 + Math.random() * 0.007, ph: Math.random() * 6.28 });
       }
     }
     parts = parts.slice(0, 90);
@@ -769,6 +805,20 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(10, 0); ctx.stroke();
         ctx.restore();
         break;
+      case 'custom':
+        if (SET.cursor.customImg) {
+          if (!customImgEl) {
+            customImgEl = new Image();
+            customImgEl.onload = function () { customImgReady = true; };
+            customImgEl.src = SET.cursor.customImg;
+          }
+          if (customImgReady) {
+            var iw = customImgEl.width || 44, ih = customImgEl.height || 44, iMax = 40;
+            var is = Math.min(iMax / iw, iMax / ih);
+            ctx.drawImage(customImgEl, -iw * is / 2, -ih * is / 2, iw * is, ih * is);
+          } else drawTree(now);
+        } else drawTree(now);
+        break;
       default:
         drawTree(now);
     }
@@ -778,7 +828,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
      Settings panel UI
      ============================================================ */
   var THEMES = [
-    ['jungle', 'Jungle'], ['light', 'Light'], ['dark', 'Dark'], ['amoled', 'AMOLED'],
+    ['auto', 'Auto (System)'], ['jungle', 'Jungle'], ['light', 'Light'], ['dark', 'Dark'], ['amoled', 'AMOLED'],
     ['ocean', 'Ocean'], ['forest', 'Forest'], ['sunset', 'Sunset'], ['midnight', 'Midnight'],
     ['cyberpunk', 'Cyberpunk'], ['minimal', 'Minimal'], ['vintage', 'Vintage'], ['coffee', 'Coffee'],
     ['emerald', 'Emerald'], ['purple', 'Purple Galaxy'], ['custom', 'Custom']
@@ -787,7 +837,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
   var ACCENTS = ['#FFD700', '#FFA500', '#2D8F4E', '#00BCD4', '#E74C3C', '#8E44AD', '#FF2D95', '#FFFFFF', '#00E676', '#7986CB', '#F9A825', '#FF6F00'];
   var NATURE = [['none', 'None'], ['rain', 'Rain'], ['ocean', 'Ocean'], ['forest', 'Forest'], ['wind', 'Wind'], ['birds', 'Birds']];
   var BGEFF = [['none', 'None'], ['leaves', 'Floating Leaves'], ['rain', 'Rain'], ['snow', 'Snow'], ['fireflies', 'Fireflies'], ['stars', 'Stars'], ['clouds', 'Clouds'], ['aurora', 'Aurora'], ['waves', 'Ocean Waves'], ['mesh', 'Gradient Mesh'], ['wallpaper', 'Live Wallpaper']];
-  var CURSOR_STYLES = [['coconut', 'Coconut Tree'], ['palm', 'Palm Tree'], ['bamboo', 'Bamboo'], ['circle', 'Minimal Circle'], ['wand', 'Magic Wand'], ['leaf', 'Leaf']];
+  var CURSOR_STYLES = [['coconut', 'Coconut Tree'], ['palm', 'Palm Tree'], ['bamboo', 'Bamboo'], ['circle', 'Minimal Circle'], ['wand', 'Magic Wand'], ['leaf', 'Leaf'], ['custom', 'Custom Image']];
 
   var panel, gear, activeTab = 'appearance';
 
@@ -864,7 +914,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     return h;
   }
   function themeColor(t) {
-    return { jungle: '#2D8F4E', light: '#E8F0E2', dark: '#0D1B0D', amoled: '#000', ocean: '#1E88A5', forest: '#388E3C', sunset: '#FF6F00', midnight: '#3949AB', cyberpunk: '#00E5FF', minimal: '#607D8B', vintage: '#8D6E63', coffee: '#5D4037', emerald: '#00C853', purple: '#7E57C2', custom: 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)' }[t] || '#2D8F4E';
+    return { jungle: '#2D8F4E', light: '#E8F0E2', dark: '#0D1B0D', amoled: '#000', ocean: '#1E88A5', forest: '#388E3C', sunset: '#FF6F00', midnight: '#3949AB', cyberpunk: '#00E5FF', minimal: '#607D8B', vintage: '#8D6E63', coffee: '#5D4037', emerald: '#00C853', purple: '#7E57C2', auto: 'linear-gradient(135deg,#0D1B0D 50%,#F4F7F2 50%)', custom: 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)' }[t] || '#2D8F4E';
   }
   function secCursor() {
     var c = SET.cursor;
@@ -883,6 +933,8 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     h += row('Hover Animation', 'hoverAnim', '<span class="pj-switch"><input type="checkbox" data-pj="hoverAnim" id="pjCHo"' + (c.hoverAnim ? ' checked' : '') + '><i></i></span>');
     h += row('Idle Animation', 'idleAnim', '<span class="pj-switch"><input type="checkbox" data-pj="idleAnim" id="pjCId"' + (c.idleAnim ? ' checked' : '') + '><i></i></span>');
     h += row('Cursor Shadow', 'shadow', '<span class="pj-switch"><input type="checkbox" data-pj="shadow" id="pjCSh"' + (c.shadow ? ' checked' : '') + '><i></i></span>');
+    h += row('Custom Image', 'customImg', '<button class="pj-btn" data-pj-action="pickCursorImg">⬆ Upload</button> <button class="pj-btn danger" data-pj-action="removeCursorImg">✕ Remove</button>');
+    h += '<input type="file" id="pjCursorFile" accept="image/*" style="display:none">';
     h += '<div class="pj-note">Custom cursor hides the default pointer. Touch devices auto-disable it.</div></div>';
     return h;
   }
@@ -955,6 +1007,8 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     h += '<button class="pj-btn" data-pj-action="importAll">⬆ Import Settings</button>';
     h += '<input type="file" id="pjAllFile" accept=".json" style="display:none">';
     h += '<button class="pj-btn" data-pj-action="copyShare">🔗 Copy Share Link</button>';
+    h += '<button class="pj-btn" data-pj-action="syncNow">☁ Sync Now</button>';
+    h += '<div class="pj-note" id="pjSyncNote">' + (sync.uid ? '☁ Synced with ' + sync.email : '☁ Sign in to sync settings across devices') + '</div>';
     h += '<button class="pj-btn danger" data-pj-action="resetAll" style="display:block;margin-top:8px;width:100%">🗑 Reset Everything</button>';
     h += '<div class="pj-note">Settings auto-save to this browser. Use export/import to move them between devices.</div></div>';
     return h;
@@ -998,6 +1052,19 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     if (themeFile) themeFile.addEventListener('change', function (e) { importThemeFile(e.target.files[0], true); });
     var allFile = panel.querySelector('#pjAllFile');
     if (allFile) allFile.addEventListener('change', function (e) { importThemeFile(e.target.files[0], false); });
+    var curFile = panel.querySelector('#pjCursorFile');
+    if (curFile) curFile.addEventListener('change', function (e) {
+      var f = e.target.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        SET.cursor.customImg = r.result;
+        customImgEl = null; customImgReady = false;
+        applySetting('style', 'custom');
+        save();
+      };
+      r.readAsDataURL(f);
+    });
   }
   function rebuildSwatches() {
     renderSections();
@@ -1044,7 +1111,15 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
       if (!confirm('Reset ALL personalization settings?')) return;
       try { localStorage.removeItem('pj_settings'); } catch (e) {}
       location.reload();
-    }
+    },
+    pickCursorImg: function () { var f = panel.querySelector('#pjCursorFile'); if (f) f.click(); },
+    removeCursorImg: function () {
+      SET.cursor.customImg = null;
+      customImgEl = null; customImgReady = false;
+      if (SET.cursor.style === 'custom') applySetting('style', 'coconut');
+      save();
+    },
+    syncNow: function () { if (sync.uid) { pushNow(); syncPull(); } else { syncInit(); updateSyncNote(); } }
   };
   function collectCustomTheme() {
     var ct = {};
@@ -1099,7 +1174,7 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
         a.theme = val;
         html.setAttribute('data-pj-theme', val);
         if (val === 'custom' && SET.customTheme) applyCustomTheme(SET.customTheme);
-        if (val === 'amoled' || val === 'midnight' || (val === 'custom' && SET.customTheme && isDark(SET.customTheme.bg))) { if (b.effect === 'none') b.effect = 'fireflies'; }
+        if (val === 'amoled' || val === 'midnight' || (val === 'auto' && W.matchMedia('(prefers-color-scheme: dark)').matches) || (val === 'custom' && SET.customTheme && isDark(SET.customTheme.bg))) { if (b.effect === 'none') b.effect = 'fireflies'; }
         bgInit(b.effect);
         break;
       case 'accent': case 'accentCustom': case 'accentCustom2':
@@ -1258,12 +1333,67 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     }
   })();
 
+  /* ---------- account sync (Firebase RTDB REST) ---------- */
+  var sync = { uid: null, email: '', applying: false, busy: false, last: 0, pushTimer: 0 };
+  function syncInit() {
+    try {
+      if (!W.firebase || !W.firebase.auth || !W.firebase.auth()) return;
+      W.firebase.auth().onAuthStateChanged(function (u) {
+        sync.uid = u ? u.uid : null;
+        sync.email = u ? (u.email || '') : '';
+        if (u) syncPull();
+        updateSyncNote();
+      });
+    } catch (e) {}
+  }
+  function syncUrl() { return 'https://python-2bab1-default-rtdb.firebaseio.com/pj/' + sync.uid + '.json'; }
+  function syncToken() { return W.firebase.auth().currentUser.getIdToken(); }
+  function syncPull() {
+    if (!sync.uid) return;
+    syncToken().then(function (tok) {
+      return fetch(syncUrl() + '?auth=' + encodeURIComponent(tok), { cache: 'no-store' });
+    }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (srv) {
+        if (srv && srv.ts && srv.s) {
+          sync.applying = true;
+          mergeDeep(DEF, JSON.parse(srv.s));
+          sync.applying = false;
+          sync.last = srv.ts;
+          applyAll();
+          if (SET.cursor.enabled && !COARSE) initCursor(); else if (!SET.cursor.enabled) destroyCursor();
+          bgInit(SET.bg.effect);
+          rebuildSwatches();
+          updateSyncNote('☁ Loaded settings from cloud');
+        }
+      }).catch(function () { updateSyncNote('☁ Sync failed — settings stay local'); });
+  }
+  function schedulePush() {
+    if (!sync.uid) return;
+    clearTimeout(sync.pushTimer);
+    sync.pushTimer = setTimeout(pushNow, 2000);
+  }
+  function pushNow() {
+    if (!sync.uid || sync.busy) return;
+    sync.busy = true;
+    syncToken().then(function (tok) {
+      return fetch(syncUrl() + '?auth=' + encodeURIComponent(tok), {
+        method: 'PUT',
+        body: JSON.stringify({ ts: Date.now(), s: JSON.stringify(SET) }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }).then(function () { sync.last = Date.now(); updateSyncNote(); })
+      .catch(function () { updateSyncNote('☁ Sync failed — settings stay local'); })
+      .then(function () { sync.busy = false; });
+  }
+  function updateSyncNote(msg) {
+    var el = panel && panel.querySelector('#pjSyncNote');
+    if (!el) return;
+    el.textContent = msg || (sync.uid ? '☁ Synced with ' + sync.email + ' — settings follow you across devices' : '☁ Not synced — sign in to sync settings across devices');
+  }
+
   /* ---------- boot ---------- */
-  function boot() {
-    buildPanel();
-    initDev();
-    // apply persisted settings
-    var a = SET.appearance, c = SET.cursor, s = SET.sound, b = SET.bg, l = SET.layout, d = SET.dev;
+  function applyAll() {
+    var a = SET.appearance, c = SET.cursor, l = SET.layout;
     var html = D.documentElement;
     html.setAttribute('data-pj-theme', a.theme);
     if (a.theme === 'custom' && SET.customTheme) applyCustomTheme(SET.customTheme);
@@ -1280,11 +1410,18 @@ html.pj-lc #pjCursorCanvas{opacity:.95}
     html.classList.toggle('pj-rd', a11yRead = SET.a11y.readingMode);
     html.classList.toggle('pj-dys', a11yDys = SET.a11y.dyslexiaFont);
     html.classList.toggle('pj-rm', a11yReduce = SET.a11y.reduceMotion || REDUCED);
+    html.classList.remove('pj-cb-protanopia', 'pj-cb-deuteranopia', 'pj-cb-tritanopia');
     if (SET.a11y.colorBlind !== 'none') { html.classList.add('pj-cb-' + SET.a11y.colorBlind); a11yCB = SET.a11y.colorBlind; }
     curSize = c.size;
-    if (c.enabled && !COARSE && !a11yReduce && !REDUCED) initCursor();
-    bgInit(b.effect);
-    startNature(s.nature);
+  }
+  function boot() {
+    buildPanel();
+    initDev();
+    applyAll();
+    if (SET.cursor.enabled && !COARSE && !a11yReduce && !REDUCED) initCursor();
+    bgInit(SET.bg.effect);
+    startNature(SET.sound.nature);
+    syncInit();
   }
 
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', boot);
