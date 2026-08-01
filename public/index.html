@@ -186,7 +186,6 @@
 .ai-welcome .ai-feat h4{color:#FFD700;font-size:11px;margin-bottom:4px}
 .ai-welcome .ai-feat p{color:#A8C89A;font-size:11px;margin:0}
 </style>
-</style>
 </head>
 <body>
 
@@ -3907,6 +3906,15 @@ function completeEx(ex) {
   });
 }
 
+function updNav() {
+  var mb = document.getElementById('navXp');
+  if (mb) mb.textContent = '🌱 ' + user.xp + ' XP · Lv.' + user.lv;
+}
+
+function saveUser() {
+  save();
+}
+
 function showSuccess(ex, perf, lvl, chDone) {
   triggerConfetti();
   document.getElementById('mXP').textContent = '+' + ex.pts;
@@ -3951,17 +3959,6 @@ function openVaultPay() {
   var url = 'payment.html?redirect=' + encodeURIComponent(window.location.href) + (selectedPlan ? '&plan=' + selectedPlan : '');
   window.open(url, '_blank');
   closePaymentModal();
-}
-function checkVaultPayToken() {
-  var token = localStorage.getItem('vp_sub');
-  var access = parseInt(localStorage.getItem('vp_access')) || 0;
-  if (access > user.access) {
-    user.access = access;
-    save();
-    showToast('🎉 Access level updated to ' + access + '%!', 'success');
-    updSidebar();
-    renderLearn();
-  }
 }
 function confirmPayment() {
   var token = localStorage.getItem('vp_sub');
@@ -4241,22 +4238,6 @@ function navigate(page, extra) {
   closeMobile();
   window.scrollTo(0, 0);
 }
-
-function filterExercises() {
-  var q = document.getElementById('searchInput').value.toLowerCase();
-  var rows = document.querySelectorAll('#topicsTable tbody tr');
-  rows.forEach(function(row) {
-    var title = row.cells[2].textContent.toLowerCase();
-    row.style.display = !q || title.indexOf(q) >= 0 ? '' : 'none';
-  });
-}
-
-function togMobile() {
-   var m = document.getElementById('navLinks');
-   var o = document.getElementById('sidebarOverlay');
-   if (m) m.classList.toggle('show');
-   if (o) o.classList.toggle('show');
- }
 
 function closeMobile() {
     var m = document.getElementById('navLinks');
@@ -5952,15 +5933,21 @@ function generateCertificate() {
 // ============================================================
 let llmLoading = false, llmReady = false, llmMessages = [], llmGenerating = false;
 const AI_SYSTEM_PROMPT = 'You are a helpful programming tutor in a gamified learning app called Python Jungle. Help users learn Python, Java, Kotlin, and React. Debug code, explain concepts, solve exercises. Keep responses concise, friendly, and educational. Use code blocks with language names for code examples.';
-var aiProvider = 'groq';
-var aiModel = 'mixtral-8x7b-32768';
+var aiProvider = 'gemini';
+var aiModel = 'gemini-3.5-flash';
 
 var AI_PROVIDERS = {
+  gemini: {url:'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent', models:['gemini-3.5-flash','gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'], def:'gemini-3.5-flash'},
   groq: {url:'https://api.groq.com/openai/v1/chat/completions', models:['mixtral-8x7b-32768','llama3-70b-8192','llama3-8b-8192','gemma2-9b-it'], def:'mixtral-8x7b-32768'},
   together: {url:'https://api.together.xyz/v1/chat/completions', models:['mistralai/Mixtral-8x7B-Instruct-v0.1','meta-llama/Llama-3-70b-chat-hf','meta-llama/Llama-3-8b-chat-hf'], def:'mistralai/Mixtral-8x7B-Instruct-v0.1'}
 };
 
-function getAIKey() { return localStorage.getItem('jungleAIKey') || ''; }
+var aiDefaultKey = 'AQ.Ab8RN6J6RFMPWbTW0fwvQynUwT9vQVPgUNeRZ0Kywk2jufGKLw';
+var aiKeyOverride = null;
+function getAIKey() {
+  if (aiKeyOverride !== null) return aiKeyOverride;
+  return localStorage.getItem('jungleAIKey') || aiDefaultKey;
+}
 function setAIKey(k) { localStorage.setItem('jungleAIKey', k); }
 function getPistonUrl() { return localStorage.getItem('junglePistonUrl') || 'http://localhost:2000'; }
 function setPistonUrl(u) { localStorage.setItem('junglePistonUrl', u); }
@@ -5981,9 +5968,12 @@ function showAISetup() {
   area.innerHTML = '<div class="ai-container">' +
     '<div class="ai-header"><h2>🤖 AI Assistant</h2><span class="ai-status loading" id="aiStatus">Setup required</span></div>' +
     '<div class="ai-welcome">' +
-      '<h3>Connect to Open-Source AI</h3>' +
-      '<p>Enter your API key to use a free LLM provider. Get a key from:</p>' +
+      '<h3>Connect to AI</h3>' +
+      '<p>Enter your API key to use an LLM provider:</p>' +
       '<div style="text-align:left;max-width:400px;margin:12px auto">' +
+        '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;margin:8px 0">' +
+          '<strong style="color:#FFD700">✨ Google Gemini</strong> — <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#6ABF69">aistudio.google.com/apikey</a>' +
+          '<br><span style="font-size:10px;color:#888">Free tier, Gemini Flash 2.0 — fast & powerful</span></div>' +
         '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;margin:8px 0">' +
           '<strong style="color:#FFD700">🔥 Groq</strong> — <a href="https://console.groq.com/keys" target="_blank" style="color:#6ABF69">console.groq.com/keys</a>' +
           '<br><span style="font-size:10px;color:#888">Free tier: 30 req/min, Mixtral 8x7B, Llama 3</span></div>' +
@@ -5994,13 +5984,14 @@ function showAISetup() {
       '<div style="margin:12px auto;max-width:400px">' +
         '<label style="color:#A8C89A;font-size:11px;display:block;margin-bottom:4px">Provider:</label>' +
         '<select id="aiProviderSelect" onchange="aiProvider=this.value;aiModel=AI_PROVIDERS[aiProvider].def;updateModelSelect()" style="width:100%;padding:8px;background:#1a2a1a;border:1px solid #2D8F4E;border-radius:6px;color:#E0E0E0;font-size:12px">' +
+          '<option value="gemini" selected>✨ Google Gemini</option>' +
           '<option value="groq">🔥 Groq</option>' +
           '<option value="together">🤝 Together AI</option>' +
         '</select>' +
         '<label style="color:#A8C89A;font-size:11px;display:block;margin:8px 0 4px">Model:</label>' +
         '<select id="aiModelSelect" style="width:100%;padding:8px;background:#1a2a1a;border:1px solid #2D8F4E;border-radius:6px;color:#E0E0E0;font-size:12px"></select>' +
         '<label style="color:#A8C89A;font-size:11px;display:block;margin:8px 0 4px">API Key:</label>' +
-        '<input id="aiKeyInput" type="password" placeholder="gsk_... or tsk_..." style="width:100%;padding:8px;background:#1a2a1a;border:1px solid #2D8F4E;border-radius:6px;color:#E0E0E0;font-size:12px" />' +
+        '<input id="aiKeyInput" type="password" placeholder="AIza... or AQ. (Gemini) / gsk_... (Groq)" style="width:100%;padding:8px;background:#1a2a1a;border:1px solid #2D8F4E;border-radius:6px;color:#E0E0E0;font-size:12px" />' +
       '</div>' +
       '<button class="ai-send-btn" style="margin-top:12px;font-size:12px;padding:14px 28px" onclick="confirmAISetup()">🔗 Connect</button>' +
     '</div></div>';
@@ -6019,8 +6010,11 @@ function confirmAISetup() {
   var prov = document.getElementById('aiProviderSelect').value;
   var model = document.getElementById('aiModelSelect').value;
   if (!key) { showToast('⚠️ Please enter an API key', 'error'); return; }
+  var keyCheck = { gemini: /^(AIza|AQ\.)/, groq: /^gsk_/, together: /^tsk_/ }[prov];
+  if (!keyCheck.test(key)) { showToast('⚠️ That key doesn\u2019t look like a ' + prov + ' key (' + (prov === 'gemini' ? 'AIza... or AQ.' : prov + '_...') + ')', 'error'); return; }
   aiProvider = prov;
   aiModel = model;
+  aiKeyOverride = null;
   setAIKey(key);
   llmReady = true;
   llmMessages = [{ role: 'system', content: AI_SYSTEM_PROMPT }];
@@ -6036,40 +6030,64 @@ function sendMessage(text) {
   llmGenerating = true;
   updateAISendBtn();
   var typingId = showAITyping();
+  llmFetch(typingId, 0);
 
-  var key = getAIKey();
-  var prov = AI_PROVIDERS[aiProvider];
-  var body = { model: aiModel, messages: llmMessages, temperature: 0.7, max_tokens: 1024 };
-
-  fetch(prov.url, {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  }).then(function(r) {
-    if (!r.ok) return r.json().then(function(e) { throw new Error(e.error?.message || 'HTTP ' + r.status); });
-    return r.json();
-  }).then(function(data) {
-    removeAITyping(typingId);
-    var aiContent = data.choices[0].message.content || '';
-    var msgEl = appendAIMessage('', 'ai');
-    if (msgEl) msgEl.querySelector('.ai-msg-content').innerHTML = markdownToHTML(aiContent);
-    llmMessages.push({ role: 'assistant', content: aiContent });
-    llmGenerating = false;
-    updateAISendBtn();
-    scrollAIChat();
-  }).catch(function(e) {
-    removeAITyping(typingId);
-    llmGenerating = false;
-    updateAISendBtn();
-    if (e.message.indexOf('401') >= 0 || e.message.indexOf('403') >= 0) {
-      showToast('⚠️ Invalid API key. Check your key or get a new one.', 'error');
-      setAIKey('');
-      llmReady = false;
-      renderAI();
+  function llmFetch(typingId, attempt) {
+    var key = getAIKey();
+    var prov = AI_PROVIDERS[aiProvider];
+    var isGemini = aiProvider === 'gemini';
+    var body, headers = { 'Content-Type': 'application/json' };
+    if (isGemini) {
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + aiModel + ':generateContent';
+      var contents = llmMessages.filter(function(m){ return m.role !== 'system'; })
+        .map(function(m){ return { role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }; });
+      body = { contents: contents, systemInstruction: { parts: [{ text: AI_SYSTEM_PROMPT }] }, generationConfig: { temperature: 0.7, maxOutputTokens: 1024 } };
+      url += '?key=' + encodeURIComponent(key);
     } else {
-      appendAIMessage('Error: ' + e.message, 'ai');
+      body = { model: aiModel, messages: llmMessages, temperature: 0.7, max_tokens: 1024 };
+      headers['Authorization'] = 'Bearer ' + key;
     }
-  });
+
+    fetch(isGemini ? url : prov.url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(function(r) {
+      if (!r.ok) return r.json().then(function(e) { var err = new Error(e.error && e.error.message || 'HTTP ' + r.status); err.status = r.status; throw err; });
+      return r.json();
+    }).then(function(data) {
+      removeAITyping(typingId);
+      var aiContent = isGemini ? (data.candidates && data.candidates[0] && data.candidates[0].content.parts.map(function(p){return p.text;}).join('') || '') : (data.choices[0].message.content || '');
+      var msgEl = appendAIMessage('', 'ai');
+      if (msgEl) msgEl.querySelector('.ai-msg-content').innerHTML = markdownToHTML(aiContent);
+      llmMessages.push({ role: 'assistant', content: aiContent });
+      llmGenerating = false;
+      updateAISendBtn();
+      scrollAIChat();
+    }).catch(function(e) {
+      removeAITyping(typingId);
+      if (e.status === 429 && attempt < 2) {
+        var m = /retry in\s+(\d+(?:\.\d+)?)\s*s/i.exec(e.message);
+        var wait = m ? Math.ceil(parseFloat(m[1])) + 2 : 30;
+        showToast('⏳ Rate limited — retrying in ' + wait + 's (' + (attempt + 1) + '/2)', 'warning');
+        setTimeout(function() { llmFetch(typingId, attempt + 1); }, wait * 1000);
+        return;
+      }
+      llmGenerating = false;
+      updateAISendBtn();
+      if (e.status === 401 || e.status === 403 || (aiProvider === 'gemini' && e.message.indexOf('API key not valid') >= 0)) {
+        showToast('⚠️ Invalid API key. Check your key or get a new one.', 'error');
+        setAIKey('');
+        aiKeyOverride = '';
+        llmReady = false;
+        renderAI();
+      } else if (e.status === 429) {
+        appendAIMessage('⚠️ Rate limited — the provider is busy. Wait a minute and try again.', 'ai');
+      } else {
+        appendAIMessage('Error: ' + e.message, 'ai');
+      }
+    });
+  }
 }
 
 function appendAIMessage(text, type) {
@@ -6269,6 +6287,29 @@ document.addEventListener('keydown', function(e) {
 </script>
 
 <script src="personalization.js?v=5" defer></script>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-content">
+    <div class="modal-title">🎉 Exercise Complete!</div>
+    <div class="modal-subtitle" id="modalSub">Great job!</div>
+    <div class="modal-stats">
+      <div class="modal-stat"><div class="val" id="mXP">+0</div><div class="lbl">XP Earned</div></div>
+      <div class="modal-stat"><div class="val" id="mTotal">0</div><div class="lbl">Total XP</div></div>
+      <div class="modal-stat"><div class="val" id="mProg">0/0</div><div class="lbl">Progress</div></div>
+      <div class="modal-stat"><div class="val" id="mBadge">✨</div><div class="lbl">Status</div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary modal-btn" onclick="nextEx()">Next Exercise →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter Unlock Banner -->
+<div id="chapterUnlockBanner"></div>
+
+<!-- Fireflies container -->
+<div id="fireflies"></div>
 
 <!-- Fail Modal -->
 <div class="modal-overlay" id="failModal">

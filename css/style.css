@@ -1318,6 +1318,29 @@ body {
   justify-content: center;
 }
 
+/* Chapter Unlock Banner */
+#chapterUnlockBanner {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 107, 60, 0.95);
+  border: 2px solid var(--bright-yellow);
+  color: var(--bright-yellow);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  z-index: 2500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  max-width: 90vw;
+}
+#chapterUnlockBanner.show {
+  display: block;
+}
+
 /* Confetti */
 .confetti-container {
   position: fixed;
