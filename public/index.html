@@ -185,6 +185,31 @@
 .ai-welcome .ai-feat{background:rgba(45,143,78,.08);border:1px solid rgba(45,143,78,.15);border-radius:8px;padding:12px}
 .ai-welcome .ai-feat h4{color:#FFD700;font-size:11px;margin-bottom:4px}
 .ai-welcome .ai-feat p{color:#A8C89A;font-size:11px;margin:0}
+.book-layout{display:flex;gap:16px;max-width:1200px;margin:0 auto;align-items:flex-start}
+.book-side{flex:0 0 270px;background:rgba(13,27,13,.8);border:1px solid rgba(45,143,78,.25);border-radius:14px;padding:14px;position:sticky;top:8px;max-height:calc(100vh - 90px);overflow:hidden;display:flex;flex-direction:column}
+.book-item{padding:8px 10px;border-radius:8px;cursor:pointer;font-size:11px;color:#D0E6C8;border:1px solid transparent;margin-bottom:2px;line-height:1.35}
+.book-item:hover{background:rgba(45,143,78,.15)}
+.book-item.act{background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.4);color:#FFD700}
+.book-main{flex:1;min-width:0}
+.book-body{background:rgba(13,27,13,.8);border:1px solid rgba(45,143,78,.25);border-radius:14px;padding:22px 26px;line-height:1.75;color:#E0E8DA}
+.book-body h1{color:#FFD700;font-size:22px;margin:0 0 14px;font-family:'Press Start 2P',monospace;line-height:1.5}
+.book-body h2{color:#FFD700;font-size:16px;margin:22px 0 8px;border-bottom:1px solid rgba(45,143,78,.25);padding-bottom:4px}
+.book-body h3{color:#F1C40F;font-size:13px;margin:16px 0 6px}
+.book-body h4{color:#E8B84B;font-size:12px;margin:14px 0 6px}
+.book-body p{margin:8px 0}
+.book-body ul,.book-body ol{margin:8px 0;padding-left:22px}
+.book-body li{margin:4px 0}
+.book-body pre{background:#0A150A;border:1px solid rgba(45,143,78,.3);border-radius:10px;padding:14px;overflow-x:auto;font-size:12px;line-height:1.6}
+.book-body code{font-family:Consolas,monospace}
+.book-body p code{background:rgba(45,143,78,.15);padding:1px 5px;border-radius:4px;font-size:11.5px}
+.book-body table{border-collapse:collapse;margin:12px 0;width:100%;font-size:12px}
+.book-body th,.book-body td{border:1px solid rgba(45,143,78,.3);padding:7px 10px;text-align:left}
+.book-body th{background:rgba(45,143,78,.15);color:#FFD700}
+.book-body blockquote{border-left:3px solid #FFD700;margin:10px 0;padding:6px 12px;background:rgba(255,215,0,.05);border-radius:0 8px 8px 0;color:#C9DBC1}
+.book-body hr{border:none;border-top:1px solid rgba(45,143,78,.3);margin:18px 0}
+.book-nav{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.book-head{display:flex;justify-content:flex-end;margin-bottom:6px}
+@media (max-width:760px){.book-layout{flex-direction:column}.book-side{flex-basis:auto;position:static;max-height:none}.book-side #bookList{max-height:220px}}
 </style>
 </head>
 <body>
@@ -240,13 +265,13 @@
       </div>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-title">🏆 Badges</div>
-      <div id="badgeList" style="font-size:10px;color:#FFD700;padding:4px 0;min-height:20px">
+      <div class="sidebar-section-title" data-i18n="sidebar.badges">🏆 Badges</div>
+      <div id="badgeList" style="font-size:10px;color:#FFD700;padding:4px 0;min-height:20px" data-i18n="sidebar.noBadges">
         No badges yet — complete exercises to earn them!
       </div>
     </div>
     <div class="sidebar-section" style="flex:1;overflow-y:auto">
-      <div class="sidebar-section-title">📚 Chapters</div>
+      <div class="sidebar-section-title" data-i18n="sidebar.chapters">📚 Chapters</div>
       <div id="chapterList"></div>
     </div>
     <div class="sidebar-section">
@@ -268,14 +293,15 @@
     <!-- Top Nav Bar -->
     <div class="top-nav" style="display:flex;align-items:center;gap:4px;padding:6px 16px;background:rgba(13,27,13,.95);border-bottom:1px solid rgba(45,143,78,.2);flex-wrap:wrap">
       <a href="#" onclick="navigate('landing')" id="navHome" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🏠</a>
-      <a href="#" onclick="navigate('learn')" id="navLearn" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">📚 Learn</a>
-      <a href="#" onclick="navigate('roadmap')" id="navRoadmap" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🗺️ Roadmap</a>
-      <a href="#" onclick="navigate('practice')" id="navPractice" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🎯 Practice</a>
-      <a href="#" onclick="navigate('tasks')" id="navTasks" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">📋 Tasks</a>
-      <a href="#" onclick="navigate('challenges')" id="navChallenges" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">⚔️ Challenges</a>
-      <a href="#" onclick="navigate('quests')" id="navQuests" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🎮 Quests</a>
-      <a href="#" onclick="navigate('profile')" id="navProfile" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">👤 Profile</a>
-      <a href="#" onclick="navigate('ai')" id="navAI" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🤖 AI</a>
+      <a href="#" onclick="navigate('learn')" id="navLearn" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.learn">📚 Learn</a>
+      <a href="#" onclick="navigate('roadmap')" id="navRoadmap" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.roadmap">🗺️ Roadmap</a>
+      <a href="#" onclick="navigate('practice')" id="navPractice" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.practice">🎯 Practice</a>
+      <a href="#" onclick="navigate('tasks')" id="navTasks" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.tasks">📋 Tasks</a>
+      <a href="#" onclick="navigate('challenges')" id="navChallenges" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.challenges">⚔️ Challenges</a>
+      <a href="#" onclick="navigate('quests')" id="navQuests" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.quests">🎮 Quests</a>
+      <a href="#" onclick="navigate('profile')" id="navProfile" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.profile">👤 Profile</a>
+      <a href="#" onclick="navigate('ai')" id="navAI" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.ai">🤖 AI</a>
+      <a href="#" onclick="navigate('book')" id="navBook" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.book">📖 Book</a>
       <span style="flex:1"></span>
       <span id="navXp" style="font-size:10px;color:#FFD700;font-family:'Press Start 2P',monospace">🌱 0 XP</span>
     </div>
@@ -284,14 +310,14 @@
     <div id="page-landing" class="pg active" style="min-height:100%;display:flex;flex-direction:column">
       <div class="hero" style="padding:40px 30px;text-align:center">
         <div style="font-size:60px;margin-bottom:10px">🌴</div>
-        <h1 class="hero-title" style="font-size:32px">Welcome to Python Jungle</h1>
-         <p class="hero-desc" style="margin:12px auto;max-width:600px;font-size:15px;color:#A8C89A">Learn Python through an epic jungle adventure! 680+ interactive exercises across 200+ chapters with Java and Kotlin too. Progressive chapter unlock — complete each chapter to unlock the next.</p>
+        <h1 class="hero-title" style="font-size:32px" data-i18n="hero.title">Welcome to Python Jungle</h1>
+         <p class="hero-desc" style="margin:12px auto;max-width:600px;font-size:15px;color:#A8C89A" data-i18n="hero.desc">Learn Python through an epic jungle adventure! 680+ interactive exercises across 200+ chapters with Java and Kotlin too. Progressive chapter unlock — complete each chapter to unlock the next.</p>
         <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <span class="diff-badge" style="background:rgba(46,204,113,.2);color:#2ECC71">🐍 Beginner → Expert</span>
-           <span class="diff-badge" style="background:rgba(241,196,15,.2);color:#F1C40F">📊 600+ Topics</span>
-          <span class="diff-badge" style="background:rgba(52,152,219,.2);color:#3498DB">⏱ 12-Week Curriculum</span>
+          <span class="diff-badge" style="background:rgba(46,204,113,.2);color:#2ECC71" data-i18n="hero.badgeBeginner">🐍 Beginner → Expert</span>
+           <span class="diff-badge" style="background:rgba(241,196,15,.2);color:#F1C40F" data-i18n="hero.badgeTopics">📊 600+ Topics</span>
+          <span class="diff-badge" style="background:rgba(52,152,219,.2);color:#3498DB" data-i18n="hero.badgeCurriculum">⏱ 12-Week Curriculum</span>
         </div>
-        <button class="start-btn" onclick="navigate('learn')" style="margin-top:24px;font-size:16px;padding:14px 32px">🚀 Start Learning</button>
+        <button class="start-btn" onclick="navigate('learn')" style="margin-top:24px;font-size:16px;padding:14px 32px" data-i18n="hero.startBtn">🚀 Start Learning</button>
       </div>
       <div id="landingTopics" style="padding:20px 30px;flex:1"></div>
     </div>
@@ -340,6 +366,11 @@
     <div id="page-ai" class="pg" style="min-height:100%;display:none">
       <div id="aiArea" style="padding:0"></div>
     </div>
+
+    <!-- Book Page -->
+    <div id="page-book" class="pg" style="min-height:100%;display:none">
+      <div id="bookArea" style="padding:20px"></div>
+    </div>
   </main>
 </div>
 
@@ -372,6 +403,73 @@ window.transformers = { pipeline: pipeline };
 
 let editor = null, curPage = 'landing', curSlug = null, pyReady = false, py = null, currentLang = null;
 let firebaseUser = null;
+
+// === LANGUAGE TRANSLATION ===
+var APP_LANG = 'en';
+var L10N = {
+  en: { 'nav.learn': '📚 Learn', 'nav.roadmap': '🗺️ Roadmap', 'nav.practice': '🎯 Practice', 'nav.tasks': '📋 Tasks', 'nav.challenges': '⚔️ Challenges', 'nav.quests': '🎮 Quests', 'nav.profile': '👤 Profile', 'nav.ai': '🤖 AI', 'nav.book': '📖 Book',
+    'hero.title': 'Welcome to Python Jungle', 'hero.desc': 'Learn Python through an epic jungle adventure! 680+ interactive exercises across 200+ chapters with Java and Kotlin too. Progressive chapter unlock — complete each chapter to unlock the next.', 'hero.badgeBeginner': '🐍 Beginner → Expert', 'hero.badgeTopics': '📊 600+ Topics', 'hero.badgeCurriculum': '⏱ 12-Week Curriculum', 'hero.startBtn': '🚀 Start Learning',
+    'sidebar.badges': '🏆 Badges', 'sidebar.chapters': '📚 Chapters', 'sidebar.noBadges': 'No badges yet — complete exercises to earn them!',
+    'book.title': '📖 Python Book', 'book.subtitle': 'The complete Python Jungle textbook', 'book.search': '🔍 Search chapters...', 'book.prev': '◀ Previous', 'book.next': 'Next ▶', 'book.noMatch': 'No matches',
+    'landing.choosePath': 'CHOOSE YOUR PATH', 'landing.title': '🌿 Python Jungle', 'landing.desc': 'Choose a language to begin your learning adventure!', 'landing.exercises': 'Exercises', 'landing.done': 'Done',
+    'ai.title': '🤖 AI Assistant', 'ai.disconnected': 'Disconnected', 'ai.ask': 'Ask me anything about Python...', 'ai.send': 'Send',
+    'settings.language': '🌐 Language' },
+  es: { 'nav.learn': '📚 Aprender', 'nav.roadmap': '🗺️ Ruta', 'nav.practice': '🎯 Practicar', 'nav.tasks': '📋 Tareas', 'nav.challenges': '⚔️ Desafíos', 'nav.quests': '🎮 Misiones', 'nav.profile': '👤 Perfil', 'nav.ai': '🤖 IA', 'nav.book': '📖 Libro',
+    'hero.title': '¡Bienvenido a Python Jungle!', 'hero.desc': '¡Aprende Python con una aventura épica en la jungla! 680+ ejercicios interactivos en 200+ capítulos, también con Java y Kotlin. Desbloqueo progresivo: completa cada capítulo para desbloquear el siguiente.', 'hero.badgeBeginner': '🐍 Principiante → Experto', 'hero.badgeTopics': '📊 600+ Temas', 'hero.badgeCurriculum': '⏱ Curso de 12 semanas', 'hero.startBtn': '🚀 Empezar a aprender',
+    'sidebar.badges': '🏆 Insignias', 'sidebar.chapters': '📚 Capítulos', 'sidebar.noBadges': 'Aún no hay insignias: ¡completa ejercicios para ganarlas!',
+    'book.title': '📖 Libro de Python', 'book.subtitle': 'El libro de texto completo de Python Jungle', 'book.search': '🔍 Buscar capítulos...', 'book.prev': '◀ Anterior', 'book.next': 'Siguiente ▶', 'book.noMatch': 'Sin resultados',
+    'landing.choosePath': 'ELIGE TU CAMINO', 'landing.title': '🌿 Python Jungle', 'landing.desc': '¡Elige un lenguaje para comenzar tu aventura de aprendizaje!', 'landing.exercises': 'Ejercicios', 'landing.done': 'Hechos',
+    'ai.title': '🤖 Asistente IA', 'ai.disconnected': 'Desconectado', 'ai.ask': 'Pregúntame cualquier cosa sobre Python...', 'ai.send': 'Enviar',
+    'settings.language': '🌐 Idioma' },
+  fr: { 'nav.learn': '📚 Apprendre', 'nav.roadmap': '🗺️ Feuille de route', 'nav.practice': '🎯 Pratiquer', 'nav.tasks': '📋 Tâches', 'nav.challenges': '⚔️ Défis', 'nav.quests': '🎮 Quêtes', 'nav.profile': '👤 Profil', 'nav.ai': '🤖 IA', 'nav.book': '📖 Livre',
+    'hero.title': 'Bienvenue dans Python Jungle !', 'hero.desc': 'Apprenez Python à travers une aventure épique dans la jungle ! 680+ exercices interactifs sur 200+ chapitres, avec Java et Kotlin aussi. Déblocage progressif : terminez chaque chapitre pour débloquer le suivant.', 'hero.badgeBeginner': '🐍 Débutant → Expert', 'hero.badgeTopics': '📊 600+ Sujets', 'hero.badgeCurriculum': '⏱ Programme de 12 semaines', 'hero.startBtn': '🚀 Commencer à apprendre',
+    'sidebar.badges': '🏆 Badges', 'sidebar.chapters': '📚 Chapitres', 'sidebar.noBadges': 'Pas encore de badges — terminez des exercices pour en gagner !',
+    'book.title': '📖 Livre Python', 'book.subtitle': 'Le manuel complet de Python Jungle', 'book.search': '🔍 Rechercher des chapitres...', 'book.prev': '◀ Précédent', 'book.next': 'Suivant ▶', 'book.noMatch': 'Aucun résultat',
+    'landing.choosePath': 'CHOISISSEZ VOTRE VOIE', 'landing.title': '🌿 Python Jungle', 'landing.desc': 'Choisissez un langage pour commencer votre aventure d\u2019apprentissage !', 'landing.exercises': 'Exercices', 'landing.done': 'Terminés',
+    'ai.title': '🤖 Assistant IA', 'ai.disconnected': 'Déconnecté', 'ai.ask': 'Posez-moi n\u2019importe quelle question sur Python...', 'ai.send': 'Envoyer',
+    'settings.language': '🌐 Langue' },
+  de: { 'nav.learn': '📚 Lernen', 'nav.roadmap': '🗺️ Fahrplan', 'nav.practice': '🎯 Üben', 'nav.tasks': '📋 Aufgaben', 'nav.challenges': '⚔️ Herausforderungen', 'nav.quests': '🎮 Quests', 'nav.profile': '👤 Profil', 'nav.ai': '🤖 KI', 'nav.book': '📖 Buch',
+    'hero.title': 'Willkommen im Python-Dschungel!', 'hero.desc': 'Lerne Python in einem epischen Dschungelabenteuer! 680+ interaktive Übungen in 200+ Kapiteln, auch mit Java und Kotlin. Progressives Freischalten: schließe jedes Kapitel ab, um das nächste zu öffnen.', 'hero.badgeBeginner': '🐍 Anfänger → Experte', 'hero.badgeTopics': '📊 600+ Themen', 'hero.badgeCurriculum': '⏱ 12-Wochen-Lehrplan', 'hero.startBtn': '🚀 Lernen starten',
+    'sidebar.badges': '🏆 Abzeichen', 'sidebar.chapters': '📚 Kapitel', 'sidebar.noBadges': 'Noch keine Abzeichen — schließe Übungen ab, um sie zu verdienen!',
+    'book.title': '📖 Python-Buch', 'book.subtitle': 'Das komplette Python-Jungle-Lehrbuch', 'book.search': '🔍 Kapitel durchsuchen...', 'book.prev': '◀ Zurück', 'book.next': 'Weiter ▶', 'book.noMatch': 'Keine Treffer',
+    'landing.choosePath': 'WÄHLE DEINEN WEG', 'landing.title': '🌿 Python Jungle', 'landing.desc': 'Wähle eine Sprache, um dein Lernabenteuer zu beginnen!', 'landing.exercises': 'Übungen', 'landing.done': 'Fertig',
+    'ai.title': '🤖 KI-Assistent', 'ai.disconnected': 'Getrennt', 'ai.ask': 'Frag mich alles über Python...', 'ai.send': 'Senden',
+    'settings.language': '🌐 Sprache' },
+  hi: { 'nav.learn': '📚 सीखें', 'nav.roadmap': '🗺️ रोडमैप', 'nav.practice': '🎯 अभ्यास', 'nav.tasks': '📋 कार्य', 'nav.challenges': '⚔️ चुनौतियाँ', 'nav.quests': '🎮 क्वेस्ट', 'nav.profile': '👤 प्रोफ़ाइल', 'nav.ai': '🤖 एआई', 'nav.book': '📖 पुस्तक',
+    'hero.title': 'पायथन जंगल में आपका स्वागत है!', 'hero.desc': 'एक महाकाव्य जंगल साहसिक यात्रा के माध्यम से पायथन सीखें! 200+ अध्यायों में 680+ इंटरैक्टिव अभ्यास, जावा और कोटलिन के साथ भी। प्रगतिशील अनलॉक — प्रत्येक अध्याय पूरा करें और अगला खोलें।', 'hero.badgeBeginner': '🐍 शुरुआती → विशेषज्ञ', 'hero.badgeTopics': '📊 600+ विषय', 'hero.badgeCurriculum': '⏱ 12-सप्ताह का पाठ्यक्रम', 'hero.startBtn': '🚀 सीखना शुरू करें',
+    'sidebar.badges': '🏆 बैज', 'sidebar.chapters': '📚 अध्याय', 'sidebar.noBadges': 'अभी कोई बैज नहीं — अभ्यास पूरे करके कमाएँ!',
+    'book.title': '📖 पायथन पुस्तक', 'book.subtitle': 'पायथन जंगल की पूरी पाठ्यपुस्तक', 'book.search': '🔍 अध्याय खोजें...', 'book.prev': '◀ पिछला', 'book.next': 'अगला ▶', 'book.noMatch': 'कोई परिणाम नहीं',
+    'landing.choosePath': 'अपना रास्ता चुनें', 'landing.title': '🌿 पायथन जंगल', 'landing.desc': 'अपनी सीखने की यात्रा शुरू करने के लिए एक भाषा चुनें!', 'landing.exercises': 'अभ्यास', 'landing.done': 'पूरे हुए',
+    'ai.title': '🤖 एआई सहायक', 'ai.disconnected': 'कनेक्ट नहीं', 'ai.ask': 'पायथन के बारे में कुछ भी पूछें...', 'ai.send': 'भेजें',
+    'settings.language': '🌐 भाषा' },
+  ar: { 'nav.learn': '📚 تعلّم', 'nav.roadmap': '🗺️ خارطة الطريق', 'nav.practice': '🎯 تمرّن', 'nav.tasks': '📋 المهام', 'nav.challenges': '⚔️ التحديات', 'nav.quests': '🎮 المهمات', 'nav.profile': '👤 الملف الشخصي', 'nav.ai': '🤖 الذكاء الاصطناعي', 'nav.book': '📖 الكتاب',
+    'hero.title': 'مرحباً بك في غابة بايثون!', 'hero.desc': 'تعلّم بايثون عبر مغامرة ملحمية في الغابة! أكثر من 680 تمريناً تفاعلياً في أكثر من 200 فصل، مع جافا وكوتلن أيضاً. فتح تدريجي: أكمل كل فصل لفتح التالي.', 'hero.badgeBeginner': '🐍 مبتدئ → خبير', 'hero.badgeTopics': '📊 أكثر من 600 موضوع', 'hero.badgeCurriculum': '⏱ منهج 12 أسبوعاً', 'hero.startBtn': '🚀 ابدأ التعلّم',
+    'sidebar.badges': '🏆 الشارات', 'sidebar.chapters': '📚 الفصول', 'sidebar.noBadges': 'لا شارات بعد — أكمل التمارين لكسبها!',
+    'book.title': '📖 كتاب بايثون', 'book.subtitle': 'الكتاب المدرسي الكامل لجنغل بايثون', 'book.search': '🔍 ابحث في الفصول...', 'book.prev': '◀ السابق', 'book.next': 'التالي ▶', 'book.noMatch': 'لا نتائج',
+    'landing.choosePath': 'اختر طريقك', 'landing.title': '🌿 غابة بايثون', 'landing.desc': 'اختر لغة لبدء مغامرة التعلّم!', 'landing.exercises': 'تمارين', 'landing.done': 'مكتملة',
+    'ai.title': '🤖 مساعد ذكي', 'ai.disconnected': 'غير متصل', 'ai.ask': 'اسألني أي شيء عن بايثون...', 'ai.send': 'إرسال',
+    'settings.language': '🌐 اللغة' },
+  zh: { 'nav.learn': '📚 学习', 'nav.roadmap': '🗺️ 路线图', 'nav.practice': '🎯 练习', 'nav.tasks': '📋 任务', 'nav.challenges': '⚔️ 挑战', 'nav.quests': '🎮 任务', 'nav.profile': '👤 个人资料', 'nav.ai': '🤖 AI', 'nav.book': '📖 图书',
+    'hero.title': '欢迎来到 Python 丛林！', 'hero.desc': '通过史诗般的丛林冒险学习 Python！200+ 章节中 680+ 个互动练习，还包含 Java 和 Kotlin。渐进式解锁——完成每个章节即可解锁下一个。', 'hero.badgeBeginner': '🐍 初学者 → 专家', 'hero.badgeTopics': '📊 600+ 主题', 'hero.badgeCurriculum': '⏱ 12 周课程', 'hero.startBtn': '🚀 开始学习',
+    'sidebar.badges': '🏆 徽章', 'sidebar.chapters': '📚 章节', 'sidebar.noBadges': '还没有徽章——完成练习即可获得！',
+    'book.title': '📖 Python 图书', 'book.subtitle': 'Python 丛林完整教科书', 'book.search': '🔍 搜索章节...', 'book.prev': '◀ 上一章', 'book.next': '下一章 ▶', 'book.noMatch': '无结果',
+    'landing.choosePath': '选择你的路径', 'landing.title': '🌿 Python 丛林', 'landing.desc': '选择一门语言，开始你的学习冒险吧！', 'landing.exercises': '练习', 'landing.done': '已完成',
+    'ai.title': '🤖 AI 助手', 'ai.disconnected': '未连接', 'ai.ask': '问我任何关于 Python 的问题...', 'ai.send': '发送',
+    'settings.language': '🌐 语言' },
+  pt: { 'nav.learn': '📚 Aprender', 'nav.roadmap': '🗺️ Roteiro', 'nav.practice': '🎯 Praticar', 'nav.tasks': '📋 Tarefas', 'nav.challenges': '⚔️ Desafios', 'nav.quests': '🎮 Missões', 'nav.profile': '👤 Perfil', 'nav.ai': '🤖 IA', 'nav.book': '📖 Livro',
+    'hero.title': 'Bem-vindo à Python Jungle!', 'hero.desc': 'Aprenda Python através de uma aventura épica na selva! 680+ exercícios interativos em 200+ capítulos, com Java e Kotlin também. Desbloqueio progressivo — complete cada capítulo para desbloquear o próximo.', 'hero.badgeBeginner': '🐍 Iniciante → Especialista', 'hero.badgeTopics': '📊 600+ Tópicos', 'hero.badgeCurriculum': '⏱ Currículo de 12 semanas', 'hero.startBtn': '🚀 Começar a aprender',
+    'sidebar.badges': '🏆 Medalhas', 'sidebar.chapters': '📚 Capítulos', 'sidebar.noBadges': 'Ainda sem medalhas — complete exercícios para ganhá-las!',
+    'book.title': '📖 Livro de Python', 'book.subtitle': 'O livro-texto completo da Python Jungle', 'book.search': '🔍 Pesquisar capítulos...', 'book.prev': '◀ Anterior', 'book.next': 'Próximo ▶', 'book.noMatch': 'Sem resultados',
+    'landing.choosePath': 'ESCOLHA SEU CAMINHO', 'landing.title': '🌿 Python Jungle', 'landing.desc': 'Escolha uma linguagem para começar sua aventura de aprendizado!', 'landing.exercises': 'Exercícios', 'landing.done': 'Concluídos',
+    'ai.title': '🤖 Assistente IA', 'ai.disconnected': 'Desconectado', 'ai.ask': 'Pergunte-me qualquer coisa sobre Python...', 'ai.send': 'Enviar',
+    'settings.language': '🌐 Idioma' }
+};
+try { var _pjL = JSON.parse(localStorage.getItem('pj_settings') || '{}').lang; if (L10N[_pjL]) APP_LANG = _pjL; } catch (e) {}
+function tr(k) { var d = L10N[APP_LANG] || L10N.en; if (k in d) return d[k]; return (k in L10N.en) ? L10N.en[k] : k; }
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = tr(el.getAttribute('data-i18n')); });
+}
+function setLang(l) { if (L10N[l]) APP_LANG = l; applyLang(); }
 
 // === FIREBASE CONFIG ===
 var firebaseConfig = {
@@ -4218,6 +4316,11 @@ function navigate(page, extra) {
       sb.style.display = 'none';
       ma.style.marginLeft = '0';
       break;
+    case 'book':
+      renderBook();
+      sb.style.display = 'none';
+      ma.style.marginLeft = '0';
+      break;
     case 'exercise':
       if (extra) {
         loadExercise(extra);
@@ -4229,13 +4332,14 @@ function navigate(page, extra) {
 
   // Update active nav link
   document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
-  var navMap = { 'landing': 'navHome', 'learn': 'navLearn', 'practice': 'navPractice', 'profile': 'navProfile', 'roadmap': 'navRoadmap', 'tasks': 'navTasks', 'challenges': 'navChallenges', 'quests': 'navQuests', 'ai': 'navAI' };
+  var navMap = { 'landing': 'navHome', 'learn': 'navLearn', 'practice': 'navPractice', 'profile': 'navProfile', 'roadmap': 'navRoadmap', 'tasks': 'navTasks', 'challenges': 'navChallenges', 'quests': 'navQuests', 'ai': 'navAI', 'book': 'navBook' };
   if (navMap[page]) {
     var el = document.getElementById(navMap[page]);
     if (el) el.classList.add('active');
   }
 
   closeMobile();
+  if (typeof applyLang === 'function') applyLang();
   window.scrollTo(0, 0);
 }
 
@@ -4261,9 +4365,9 @@ function renderLearn() {
   var c = document.getElementById('learnArea');
   if (!currentLang) {
     // Show language selector
-    var html = '<div class="hero"><span class="diff-badge">CHOOSE YOUR PATH</span>';
-    html += '<h1 class="hero-title">🌿 Python Jungle</h1>';
-    html += '<p class="hero-desc">Choose a language to begin your learning adventure!</p></div>';
+    var html = '<div class="hero"><span class="diff-badge">' + tr('landing.choosePath') + '</span>';
+    html += '<h1 class="hero-title">' + tr('landing.title') + '</h1>';
+    html += '<p class="hero-desc">' + tr('landing.desc') + '</p></div>';
      html += '<div class="sub-banner"><div class="sub-banner-text">🎁 <strong>Progressive unlock</strong> — complete each chapter to unlock the next. <span onclick="showPaymentModal()" style="color:#FFD700;cursor:pointer;text-decoration:underline">₹99/₹299/₹499 plans →</span></div></div>';
     html += '<div class="lang-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:960px;margin:24px auto;padding:0 16px">';
     var langKeys = ['python','java','kotlin','web'];
@@ -4276,7 +4380,7 @@ function renderLearn() {
       html += '<div style="font-size:48px;margin-bottom:8px">' + m.icon + '</div>';
       html += '<h3 style="color:#FFD700;font-size:15px;font-family:\'Press Start 2P\',monospace;margin:8px 0">' + m.label + '</h3>';
       html += '<p style="color:#A8C89A;font-size:11px;margin:6px 0">' + m.desc + '</p>';
-      html += '<div style="display:flex;gap:8px;justify-content:center;margin:8px 0;font-size:10px;color:#888"><span>' + exs.length + ' Exercises</span><span>|</span><span>' + done + ' Done</span></div>';
+      html += '<div style="display:flex;gap:8px;justify-content:center;margin:8px 0;font-size:10px;color:#888"><span>' + exs.length + ' ' + tr('landing.exercises') + '</span><span>|</span><span>' + done + ' ' + tr('landing.done') + '</span></div>';
       html += '<div class="progress-wrap" style="margin:8px 0"><div class="progress-bar" style="height:4px"><div class="progress-bar-fill" style="width:' + pct + '%;height:4px"></div></div></div>';
       html += '<button class="start-btn" style="font-size:12px;padding:8px 20px;margin-top:4px">Launch →</button>';
       html += '</div>';
@@ -5966,7 +6070,7 @@ function initLLM() {
 function showAISetup() {
   var area = document.getElementById('aiArea');
   area.innerHTML = '<div class="ai-container">' +
-    '<div class="ai-header"><h2>🤖 AI Assistant</h2><span class="ai-status loading" id="aiStatus">Setup required</span></div>' +
+    '<div class="ai-header"><h2>' + tr('ai.title') + '</h2><span class="ai-status loading" id="aiStatus">Setup required</span></div>' +
     '<div class="ai-welcome">' +
       '<h3>Connect to AI</h3>' +
       '<p>Enter your API key to use an LLM provider:</p>' +
@@ -6137,18 +6241,117 @@ function escapeHTML(str) {
 function markdownToHTML(md) {
   if (!md) return '';
   var html = escapeHTML(md);
-  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  var pres = [];
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function (m, lang, code) {
+    pres.push('<pre><code>' + code.replace(/\n$/, '') + '</code></pre>');
+    return '\u0000PRE' + (pres.length - 1) + '\u0000';
+  });
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  html = html.replace(/\n/g, '<br>');
-  return html;
+  html = html.replace(/^(#{1,6})\s+([^\n]+)$/gm, function (m, h, t) { var l = h.length; return '<h' + l + '>' + t + '</h' + l + '>'; });
+  html = html.replace(/^(<h[1-6]>.*?<\/h[1-6]>)$/gm, '$1\n');
+  html = html.replace(/(^\|.+\|[ \t]*(?:\n|$))+/gm, function (m) {
+    var rows = [];
+    m.trim().split('\n').forEach(function (l) {
+      l = l.replace(/^\s*\|/, '').replace(/\|\s*$/, '');
+      if (/^\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*$/.test(l)) return;
+      rows.push('<tr>' + l.split('|').map(function (c) { return '<td>' + c.trim() + '</td>'; }).join('') + '</tr>');
+    });
+    return '<table>' + rows.join('') + '</table>';
+  });
+  html = html.replace(/(?:^&gt;\s?[^\n]*)+/gm, function (m) {
+    return '<blockquote>' + m.replace(/^&gt;\s?/gm, '').replace(/\n/g, '<br>') + '</blockquote>';
+  });
+  html = html.replace(/(?:^\s*[-*]\s+[^\n]*(?:\n|$))+/gm, function (m) {
+    return '<ul>' + m.trim().split('\n').map(function (l) { return '<li>' + l.replace(/^\s*[-*]\s+/, '') + '</li>'; }).join('') + '</ul>';
+  });
+  html = html.replace(/(?:^\s*\d+\.\s+[^\n]*(?:\n|$))+/gm, function (m) {
+    return '<ol>' + m.trim().split('\n').map(function (l) { return '<li>' + l.replace(/^\s*\d+\.\s+/, '') + '</li>'; }).join('') + '</ol>';
+  });
+  html = html.split(/\n{2,}/).map(function (b) {
+    b = b.replace(/^\n+|\n+$/g, '');
+    if (!b) return '';
+    if (/^\u0000PRE/.test(b)) return b;
+    if (/^\s*<(h\d|ul|ol|table|blockquote|hr)/.test(b)) return b.replace(/\n/g, '');
+    if (/^\s*-{3,}\s*$/.test(b.trim())) return '<hr>';
+    return '<p>' + b.replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+  return html.replace(/\u0000PRE(\d+)\u0000/g, function (m, i) { return pres[+i]; });
+}
+
+// ============================================================
+// BOOK MODULE — 61 lessons from book-data.js
+// ============================================================
+var BOOK_SLUGS = [];
+function bookOrder(a, b) {
+  var na = /^py(\d+)/.exec(a), nb = /^py(\d+)/.exec(b);
+  if (na && nb) return (+na[1]) - (+nb[1]);
+  if (na) return 1;
+  if (nb) return -1;
+  return a < b ? -1 : 1;
+}
+function bookTitle(md, slug) {
+  var m = /^#\s+(.+)$/m.exec(md || '');
+  return m ? m[1].trim() : slug;
+}
+function renderBook() {
+  var c = document.getElementById('bookArea');
+  if (!window.BOOK_MD) { c.innerHTML = '<div class="hero"><p>Book content not found.</p></div>'; return; }
+  BOOK_SLUGS = Object.keys(window.BOOK_MD).sort(bookOrder);
+  var cur = localStorage.getItem('pjBookLast');
+  if (BOOK_SLUGS.indexOf(cur) < 0) cur = BOOK_SLUGS[0];
+  c.innerHTML = '<div class="book-layout">' +
+    '<div class="book-side">' +
+      '<h2 style="margin:0 0 6px;font-size:13px;color:#FFD700" data-i18n="book.title">📖 Python Book</h2>' +
+      '<div style="font-size:10px;color:#A8C89A;margin-bottom:10px" data-i18n="book.subtitle">The complete Python Jungle textbook</div>' +
+      '<input id="bookSearch" placeholder="' + tr('book.search') + '" style="width:100%;box-sizing:border-box;padding:7px 9px;background:rgba(255,255,255,.06);border:1px solid rgba(45,143,78,.4);border-radius:8px;color:#E0E0E0;font-size:11px;outline:none;margin-bottom:8px">' +
+      '<div id="bookList" style="overflow-y:auto;max-height:calc(100vh - 300px)"></div>' +
+    '</div>' +
+    '<div class="book-main"><div id="bookView"></div>' +
+      '<div class="book-nav">' +
+        '<button class="start-btn" onclick="bookNav(-1)" style="font-size:11px;padding:8px 16px" data-i18n="book.prev">◀ Previous</button>' +
+        '<button class="start-btn" onclick="bookNav(1)" style="font-size:11px;padding:8px 16px" data-i18n="book.next">Next ▶</button>' +
+      '</div>' +
+    '</div></div>';
+  var inp = document.getElementById('bookSearch');
+  inp.addEventListener('input', function () { renderBookList(inp.value, localStorage.getItem('pjBookLast')); });
+  renderBookList('', cur);
+  renderBookView(cur);
+}
+function renderBookList(q, cur) {
+  var list = document.getElementById('bookList');
+  if (!list) return;
+  q = (q || '').toLowerCase();
+  list.innerHTML = BOOK_SLUGS.filter(function (s) {
+    return !q || s.toLowerCase().indexOf(q) >= 0 || bookTitle(window.BOOK_MD[s], s).toLowerCase().indexOf(q) >= 0;
+  }).map(function (s) {
+    return '<div class="book-item' + (s === cur ? ' act' : '') + '" onclick="bookOpen(\'' + s + '\')">' + escapeHTML(bookTitle(window.BOOK_MD[s], s)) + '</div>';
+  }).join('') || '<div style="color:#888;font-size:11px;padding:8px" data-i18n="book.noMatch">No matches</div>';
+}
+function bookOpen(slug) {
+  localStorage.setItem('pjBookLast', slug);
+  renderBookList(document.getElementById('bookSearch').value, slug);
+  renderBookView(slug);
+}
+function bookNav(d) {
+  var cur = localStorage.getItem('pjBookLast');
+  var i = BOOK_SLUGS.indexOf(cur) + d;
+  if (i < 0 || i >= BOOK_SLUGS.length) return;
+  bookOpen(BOOK_SLUGS[i]);
+}
+function renderBookView(slug) {
+  var v = document.getElementById('bookView');
+  if (!v) return;
+  var i = BOOK_SLUGS.indexOf(slug) + 1;
+  v.innerHTML = '<div class="book-head"><span style="font-size:10px;color:#A8C89A">' + i + ' / ' + BOOK_SLUGS.length + '</span></div>' +
+    '<div class="book-body">' + markdownToHTML(window.BOOK_MD[slug]) + '</div>';
+  v.scrollTop = 0;
 }
 
 function renderAI() {
   var area = document.getElementById('aiArea');
-  if (!area) return;
-  if (!llmReady) {
+  if (!area) return;  if (!llmReady) {
     var key = getAIKey();
     if (key) { initLLM(); return; }
     renderAIWelcome();
@@ -6161,8 +6364,8 @@ function renderAIWelcome() {
   var area = document.getElementById('aiArea');
 area.innerHTML = '<div class="ai-container">' +
     '<div class="ai-header">' +
-      '<h2>🤖 AI Assistant</h2>' +
-      '<span class="ai-status loading" id="aiStatus">Disconnected</span>' +
+      '<h2>' + tr('ai.title') + '</h2>' +
+      '<span class="ai-status loading" id="aiStatus">' + tr('ai.disconnected') + '</span>' +
     '</div>' +
     '<div class="ai-welcome">' +
       '<h3>Your Personal Coding Tutor</h3>' +
@@ -6184,7 +6387,7 @@ function renderAIReady() {
   var area = document.getElementById('aiArea');
   area.innerHTML = '<div class="ai-container">' +
     '<div class="ai-header">' +
-      '<h2>🤖 AI Assistant</h2>' +
+      '<h2>' + tr('ai.title') + '</h2>' +
       '<span class="ai-status ready" id="aiStatus">Ready</span>' +
     '</div>' +
     '<div class="ai-quick-actions">' +
@@ -6195,8 +6398,8 @@ function renderAIReady() {
     '</div>' +
     '<div class="ai-chat-area" id="aiChatArea"></div>' +
     '<div class="ai-input-area">' +
-      '<textarea id="aiInput" placeholder="Ask me anything about Python..." rows="1" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();sendAIMessage()}"></textarea>' +
-      '<button class="ai-send-btn" id="aiSendBtn" onclick="sendAIMessage()">Send</button>' +
+      '<textarea id="aiInput" placeholder="' + tr('ai.ask') + '" rows="1" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();sendAIMessage()}"></textarea>' +
+      '<button class="ai-send-btn" id="aiSendBtn" onclick="sendAIMessage()">' + tr('ai.send') + '</button>' +
     '</div>' +
   '</div>';
   if (llmMessages.length > 1) {
@@ -6213,7 +6416,7 @@ function renderAIError(msg) {
   var area = document.getElementById('aiArea');
   area.innerHTML = '<div class="ai-container">' +
     '<div class="ai-header">' +
-      '<h2>🤖 AI Assistant</h2>' +
+      '<h2>' + tr('ai.title') + '</h2>' +
       '<span class="ai-status error" id="aiStatus">Error</span>' +
     '</div>' +
     '<div class="ai-no-webgpu">' +
@@ -6286,7 +6489,8 @@ document.addEventListener('keydown', function(e) {
 });
 </script>
 
-<script src="personalization.js?v=5" defer></script>
+<script src="book-data.js" defer></script>
+<script src="personalization.js?v=6" defer></script>
 
 <!-- Success Modal -->
 <div class="modal-overlay" id="successModal">

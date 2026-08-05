@@ -9,7 +9,7 @@ const pub = path.join(root, 'public');
 let fails = 0;
 function ok(cond, msg) { if (cond) console.log('PASS ' + msg); else { fails++; console.log('FAIL ' + msg); } }
 
-const pairs = ['index.html', 'payment.html', 'css/style.css'];
+const pairs = ['index.html', 'payment.html', 'css/style.css', 'personalization.js', 'book-data.js'];
 pairs.forEach(f => {
   const a = fs.readFileSync(path.join(root, f));
   const b = fs.readFileSync(path.join(pub, f));
@@ -33,8 +33,11 @@ for (const f of pairs) {
 }
 
 const idx = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const needIds = ['successModal', 'mXP', 'mTotal', 'mProg', 'mBadge', 'modalSub', 'chapterUnlockBanner', 'fireflies', 'failModal', 'paymentModal', 'consoleOut', 'navXp'];
+const needIds = ['successModal', 'mXP', 'mTotal', 'mProg', 'mBadge', 'modalSub', 'chapterUnlockBanner', 'fireflies', 'failModal', 'paymentModal', 'consoleOut', 'navXp', 'navBook', 'page-book', 'bookArea', 'bookSearch', 'bookView'];
 needIds.forEach(id => ok(new RegExp('id="' + id + '"').test(idx), 'id present: ' + id));
+ok(/window\.BOOK_MD=/.test(fs.readFileSync(path.join(root, 'book-data.js'), 'utf8')), 'book-data.js defines BOOK_MD');
+ok(idx.indexOf('book-data.js') > -1, 'index.html loads book-data.js');
+ok(idx.indexOf('personalization.js?v=6') > -1, 'personalization.js cache-bust v6');
 ok(!/(\n<\/style>\s*<\/style>)/.test(idx), 'no duplicate </style>');
 const opens = (idx.match(/<script[^>]*>/g) || []).length;
 const closes = (idx.match(/<\/script>/g) || []).length;
