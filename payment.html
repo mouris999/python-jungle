@@ -216,14 +216,17 @@ a{text-decoration:none}
           <a class="upi-app" id="lnk-bhim" href="#"><div class="app-ico">🇮🇳</div>BHIM</a>
           <a class="upi-app" id="lnk-mobikwik" href="#"><div class="app-ico">🟣</div>MobiKwik</a>
         </div>
+        <div class="divider">OR PAY WITH CARD / GOOGLE PAY</div>
+        <div id="paypal-box"></div>
+        <div style="font-size:9px;color:var(--dim2);margin:-4px 0 18px;text-align:center">Charged in USD by PayPal (sandbox mode)</div>
         <div class="step-lbl">Step 2 — Enter your UTR / Reference number</div>
-        <div class="field-lbl">Transaction reference (from bank SMS / app)</div>
+        <div class="field-lbl">Transaction reference (from bank SMS / app) — for UPI payments only</div>
         <input type="text" class="field-input" id="utr-in" placeholder="e.g. 425612345678" maxlength="64" autocomplete="off">
         <div class="rate-warn" id="rate-warn">Too many attempts. Please wait before retrying.</div>
         <button class="btn-main" id="btn-verify" onclick="submitPay()">VERIFY &amp; ACTIVATE SUBSCRIPTION</button>
         <div class="info-box">
           <span class="info-box-ico">✓</span>
-          <span>Secured by AES-256-GCM encryption. Your transaction reference is cryptographically verified. Never share your bank OTP with anyone. Gateway runs entirely in your browser — no third-party servers.</span>
+          <span>Secured by AES-256-GCM encryption. Card/Google Pay payments are captured and verified by the VaultPay server — secrets never leave it. For UPI, submit your transaction reference and the admin verifies it manually.</span>
         </div>
       </div>
     </div>
@@ -366,9 +369,6 @@ const REDIRECT_AFTER = new URLSearchParams(location.search).get('redirect') || '
 const CFG = {
   upiId:          '9217517591@mbk',
   merchantName:   'VaultPay',
-  adminSecret:    'VP@Admin#Secret2024!Secure',
-  tokenSecret:    'VPToken#AES256!Key_2024',
-  signingSecret:  'VPHMAC#SHA256_SignKey!9x4k',
   plans: {
     99:  { name:'Starter', tier:'STARTER', access:30,  label:'30% Access', features:['30% content unlocked','Standard quality stream','Email support','30-day validity'] },
     299: { name:'Pro',     tier:'PRO',     access:60,  label:'60% Access', features:['60% content unlocked','HD quality stream','Priority support','30-day validity','Download enabled'] },
@@ -380,74 +380,41 @@ const CFG = {
   rateLimitMs:      3600000
 };
 
-const Cry = {
-  enc: new TextEncoder(),
-  dec: new TextDecoder(),
-  async deriveKey(password, salt) {
-    const raw = await crypto.subtle.importKey('raw', this.enc.encode(password), 'PBKDF2', false, ['deriveKey']);
-    return crypto.subtle.deriveKey(
-      {name:'PBKDF2', salt:this.enc.encode(salt), iterations:150000, hash:'SHA-256'},
-      raw, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']
-    );
-  },
-  async encrypt(plaintext, secret) {
-    const salt = rndHex(16);
-    const iv   = crypto.getRandomValues(new Uint8Array(12));
-    const key  = await this.deriveKey(secret, salt);
-    const enc  = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, this.enc.encode(plaintext));
-    const ivH  = toHex(iv);
-    const encH = toHex(new Uint8Array(enc));
-    return `VP1:${salt}:${ivH}:${encH}`;
-  },
-  async decrypt(token, secret) {
-    const p = token.split(':');
-    if (p[0] !== 'VP1' || p.length !== 4) throw new Error('INVALID_FORMAT');
-    const [,salt, ivH, encH] = p;
-    const iv  = fromHex(ivH);
-    const enc = fromHex(encH);
-    const key = await this.deriveKey(secret, salt);
-    const dec = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, enc);
-    return this.dec.decode(dec);
-  },
-  async hmac(data, secret) {
-    const k = await crypto.subtle.importKey('raw', this.enc.encode(secret), {name:'HMAC',hash:'SHA-256'}, false, ['sign']);
-    const s = await crypto.subtle.sign('HMAC', k, this.enc.encode(data));
-    return toHex(new Uint8Array(s));
-  },
-  async hmacVerify(data, sig, secret) {
-    return (await this.hmac(data, secret)) === sig;
+// ── PAY SERVER (PayPal/Google Pay + token minting live here, not in the browser) ──
+const PAY = {
+  getUrl() { return localStorage.getItem('vaultPayUrl') || 'http://localhost:8888'; },
+  async call(path, body, method) {
+    const r = await fetch(this.getUrl() + path, {
+      method: method || (body ? 'POST' : 'GET'),
+      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      body: body ? JSON.stringify(body) : undefined
+    });
+    let j = null;
+    try { j = await r.json(); } catch (e) { /* non-JSON response */ }
+    if (!r.ok) throw new Error((j && j.error) ? j.error : ('HTTP ' + r.status));
+    return j;
   }
 };
 
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = res;
+    s.onerror = () => rej(new Error('Failed to load PayPal SDK'));
+    document.head.appendChild(s);
+  });
+}
+
 function toHex(u8) { return Array.from(u8).map(b=>b.toString(16).padStart(2,'0')).join(''); }
-function fromHex(h) { return new Uint8Array(h.match(/.{2}/g).map(b=>parseInt(b,16))); }
 function rndHex(n) { return toHex(crypto.getRandomValues(new Uint8Array(n))); }
 
 const Tkn = {
-  async create(plan, txnRef, uid) {
-    const pd = CFG.plans[plan];
-    const now = Date.now();
-    const payload = {
-      v:'2', id:rndHex(8), uid,
-      plan:+plan, access:pd.access, planName:pd.name,
-      txn:txnRef, iat:now, exp:now + CFG.validityDays*86400000
-    };
-    const body = JSON.stringify(payload);
-    payload.sig = await Cry.hmac(body, CFG.signingSecret);
-    const full = JSON.stringify(payload);
-    const token = await Cry.encrypt(full, CFG.tokenSecret);
-    return {token, payload};
-  },
+  // verification is server-side now — secrets no longer exist in this page
   async verify(encToken) {
-    const raw = await Cry.decrypt(encToken, CFG.tokenSecret);
-    const p = JSON.parse(raw);
-    if (Date.now() > p.exp) throw new Error('TOKEN_EXPIRED');
-    const rl = getRevokeList();
-    if (rl.includes(p.id)) throw new Error('TOKEN_REVOKED');
-    const {sig, ...rest} = p;
-    const valid = await Cry.hmacVerify(JSON.stringify(rest), sig, CFG.signingSecret);
-    if (!valid) throw new Error('TOKEN_TAMPERED');
-    return p;
+    const r = await PAY.call('/api/token/verify', { token: encToken });
+    if (!r.valid) throw new Error(r.reason);
+    return r.payload;
   }
 };
 
@@ -465,15 +432,12 @@ const PS = {
   save(list) { localStorage.setItem(this.key, JSON.stringify(list)); },
   add(e) { const l=this.all(); l.push({...e, ts:Date.now(), status:'pending'}); this.save(l); },
   byUTR(u) { return this.all().find(i=>i.utr===u); },
-  approve(u) { const l=this.all(),i=l.find(x=>x.utr===u); if(i)i.status='approved'; this.save(l); return i; },
+  approve(u, token, payload) { const l=this.all(),i=l.find(x=>x.utr===u); if(i){i.status='approved'; if(token)i.token=token; if(payload)i.payload=payload;} this.save(l); return i; },
   reject(u) { const l=this.all(),i=l.find(x=>x.utr===u); if(i)i.status='rejected'; this.save(l); },
   pending() { return this.all().filter(i=>i.status==='pending'); }
 };
 
-function getRevokeList() { try{return JSON.parse(localStorage.getItem('vp_revoked')||'[]');}catch{return [];} }
-function revokeToken(id) { const l=getRevokeList(); if(!l.includes(id)){l.push(id);localStorage.setItem('vp_revoked',JSON.stringify(l));} }
-
-let S = { plan:null, txnId:null, uid:null, timerInt:null, timerSec:0, token:null, adminAuth:false, pendingTimer:null };
+let S = { plan:null, txnId:null, uid:null, timerInt:null, timerSec:0, token:null, adminSecret:null, pendingTimer:null };
 
 function show(name) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -527,7 +491,42 @@ function selectPlan(amount) {
   document.getElementById('rate-warn').classList.remove('show');
   startTimer();
   show('payment');
+  initCardPay();
 }
+
+// ── PayPal / Google Pay checkout (server does capture + token minting) ──
+let paySdkLoaded = false;
+async function initCardPay() {
+  const box = document.getElementById('paypal-box');
+  if(!S.plan) return;
+  box.innerHTML = '<div class="btn-main" style="text-align:center;opacity:.55;pointer-events:none">LOADING PAYMENT OPTIONS…</div>';
+  try {
+    const cfg = await PAY.call('/api/config');
+    if(!cfg.clientId) throw new Error('PayPal is not configured on the server (missing PAYPAL_CLIENT_ID)');
+    if(!paySdkLoaded) {
+      await loadScript('https://www.paypal.com/sdk/js?components=googlepay,buttons&client-id=' + encodeURIComponent(cfg.clientId) + '&merchant-id=' + encodeURIComponent(cfg.merchantId || '') + '&currency=USD&intent=capture');
+      paySdkLoaded = true;
+    }
+    box.innerHTML = '<div id="pp-btns"></div><div id="gpay-btns" style="margin-top:10px"></div>';
+    const opts = {
+      style: { label: 'pay', layout: 'vertical', color: 'gold' },
+      createOrder: () => PAY.call('/api/orders', { plan: S.plan }).then(o => o.id),
+      onApprove: data => captureOrder(data.orderID),
+      onError: e => toast('Payment failed: ' + (e.message || e), 'err')
+    };
+    paypal.Buttons(opts).render('#pp-btns');
+    if(paypal.Googlepay) paypal.Googlepay({ ...opts, environment: 'TEST' }).render('#gpay-btns');
+  } catch(e) {
+    box.innerHTML = '<div style="font-size:10px;color:var(--red);text-align:center;padding:10px">⚠ ' + esc(e.message) + '</div>';
+  }
+}
+
+async function captureOrder(orderID) {
+  const res = await PAY.call('/api/orders/' + encodeURIComponent(orderID) + '/capture', { plan: S.plan, uid: S.uid });
+  await activateSub(res.token, res.payload);
+}
+
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function startTimer() {
   if(S.timerInt) clearInterval(S.timerInt);
@@ -573,9 +572,10 @@ async function checkPending() {
   if(!entry) return;
   if(entry.status === 'approved') {
     clearInterval(S.pendingTimer);
+    if(!entry.token) { document.getElementById('p-status').textContent = 'Approved — token unavailable'; document.getElementById('p-status').style.color = 'var(--red)'; return; }
     document.getElementById('p-status').textContent = 'Approved ✓';
     document.getElementById('p-status').style.color = 'var(--green)';
-    await activateSub(entry.plan, utr, entry.uid || S.uid);
+    await activateSub(entry.token, entry.payload);
   } else if(entry.status === 'rejected') {
     clearInterval(S.pendingTimer);
     document.getElementById('p-status').textContent = 'Rejected ✗';
@@ -586,8 +586,7 @@ async function checkPending() {
   }
 }
 
-async function activateSub(plan, txnRef, uid) {
-  const {token, payload} = await Tkn.create(plan, txnRef, uid || S.uid);
+async function activateSub(token, payload) {
   S.token = token;
   localStorage.setItem('vp_sub', token);
   localStorage.setItem('vp_access', String(payload.access));
@@ -636,15 +635,18 @@ async function doCheck() {
   }
 }
 
-function authAdmin() {
+async function authAdmin() {
   const pwd = document.getElementById('admin-pwd').value;
-  if(pwd === CFG.adminSecret) {
-    S.adminAuth = true;
+  if(!pwd){ toast('Enter the admin secret','err'); return; }
+  try {
+    const a = await PAY.call('/api/admin/auth', { secret: pwd });
+    if(!a.ok) throw new Error('wrong secret');
+    S.adminSecret = pwd; // held in memory for this session only
     document.getElementById('admin-wall').style.display  = 'none';
     document.getElementById('admin-panel').style.display = 'block';
     loadAdminPending();
     toast('Admin authenticated','ok');
-  } else {
+  } catch(e) {
     toast('Wrong admin secret','err');
     document.getElementById('admin-pwd').value = '';
   }
@@ -666,16 +668,20 @@ function loadAdminPending() {
 }
 
 async function admApprove(utr, plan) {
-  PS.approve(utr);
-  const {token, payload} = await Tkn.create(plan, utr, rndHex(8));
-  toast(`Approved — ${CFG.plans[plan].name} token issued`,'ok');
-  document.getElementById('adm-issued').innerHTML = `
-    <div class="result-ok">
-      <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:8px">TOKEN ISSUED FOR UTR: ${utr}</div>
-      <div class="token-val">${token}</div>
-      <button class="btn-copy" style="margin-top:10px" onclick="navigator.clipboard.writeText('${token}')">COPY TOKEN</button>
-    </div>`;
-  loadAdminPending();
+  try {
+    const {token, payload} = await PAY.call('/api/admin/mint', { secret: S.adminSecret, plan: plan, txn: utr, uid: S.uid || '' });
+    PS.approve(utr, token, payload);
+    toast(`Approved — ${CFG.plans[plan].name} token issued`,'ok');
+    document.getElementById('adm-issued').innerHTML = `
+      <div class="result-ok">
+        <div style="font-size:9px;letter-spacing:.2em;color:var(--green);margin-bottom:8px">TOKEN ISSUED FOR UTR: ${utr}</div>
+        <div class="token-val">${token}</div>
+        <button class="btn-copy" style="margin-top:10px" onclick="navigator.clipboard.writeText('${token}')">COPY TOKEN</button>
+      </div>`;
+    loadAdminPending();
+  } catch(e) {
+    toast('Mint failed: ' + e.message,'err');
+  }
 }
 
 function admReject(utr) {
@@ -688,14 +694,18 @@ async function adminIssue() {
   const txn  = sanitize(document.getElementById('adm-txn').value.trim());
   const plan = parseInt(document.getElementById('adm-plan').value);
   if(!txn){ toast('Enter a transaction reference','err'); return; }
-  const {token, payload} = await Tkn.create(plan, txn, rndHex(8));
-  document.getElementById('adm-issued').innerHTML = `
-    <div class="result-ok">
-      <div style="font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px">${CFG.plans[plan].name} · ${payload.access}% access · valid ${CFG.validityDays}d · ID: ${payload.id}</div>
-      <div class="token-val">${token}</div>
-      <button class="btn-copy" style="margin-top:10px" onclick="navigator.clipboard.writeText('${token}')">COPY TOKEN</button>
-    </div>`;
-  toast('Token issued','ok');
+  try {
+    const {token, payload} = await PAY.call('/api/admin/mint', { secret: S.adminSecret, plan: plan, txn: txn });
+    document.getElementById('adm-issued').innerHTML = `
+      <div class="result-ok">
+        <div style="font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px">${CFG.plans[plan].name} · ${payload.access}% access · valid ${CFG.validityDays}d · ID: ${payload.id}</div>
+        <div class="token-val">${token}</div>
+        <button class="btn-copy" style="margin-top:10px" onclick="navigator.clipboard.writeText('${token}')">COPY TOKEN</button>
+      </div>`;
+    toast('Token issued','ok');
+  } catch(e) {
+    toast('Mint failed: ' + e.message,'err');
+  }
 }
 
 async function adminVerify() {
@@ -719,8 +729,12 @@ async function adminVerify() {
 async function adminRevoke() {
   const id = document.getElementById('adm-revoke-id').value.trim();
   if(!id || id.length !== 16){ toast('Enter a valid 16-char token ID','err'); return; }
-  revokeToken(id);
-  toast(`Token ${id} revoked`,'ok');
+  try {
+    await PAY.call('/api/token/revoke', { secret: S.adminSecret, id: id });
+    toast(`Token ${id} revoked`,'ok');
+  } catch(e) {
+    toast('Revoke failed: ' + e.message,'err');
+  }
 }
 
 function getUID() { let u=localStorage.getItem('vp_uid'); if(!u){u=rndHex(16);localStorage.setItem('vp_uid',u);} return u; }
