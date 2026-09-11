@@ -336,7 +336,7 @@ a{text-decoration:none}
         <div class="admin-grid">
           <input type="text" class="field-input" id="adm-txn" placeholder="Transaction reference / UTR" style="margin:0">
           <select class="field-select" id="adm-plan">
-            <option value="99">₹99 — Starter (30% access)</option>
+            <option value="1">₹1 — Starter (30% access)</option>
             <option value="299">₹299 — Pro (60% access)</option>
             <option value="499">₹499 — Elite (100% access)</option>
           </select>
@@ -370,7 +370,7 @@ const CFG = {
   upiId:          '9217517591@mbk',
   merchantName:   'VaultPay',
   plans: {
-    99:  { name:'Starter', tier:'STARTER', access:30,  label:'30% Access', features:['30% content unlocked','Standard quality stream','Email support','30-day validity'] },
+    1:  { name:'Starter', tier:'STARTER', access:30,  label:'30% Access', features:['30% content unlocked','Standard quality stream','Email support','30-day validity'] },
     299: { name:'Pro',     tier:'PRO',     access:60,  label:'60% Access', features:['60% content unlocked','HD quality stream','Priority support','30-day validity','Download enabled'] },
     499: { name:'Elite',   tier:'ELITE',   access:100, label:'100% Access', features:['Full 100% access','4K stream quality','VIP 24/7 support','30-day validity','All features + API'] }
   },
@@ -453,7 +453,7 @@ function goBack() {
 }
 
 function renderPlans() {
-  const items = [{a:99,f:false},{a:299,f:true},{a:499,f:false}];
+  const items = [{a:1,f:false},{a:299,f:true},{a:499,f:false}];
   document.getElementById('plans-grid').innerHTML = items.map(({a,f})=>{
     const p=CFG.plans[a];
     return `<div class="plan ${f?'featured':''}" onclick="selectPlan(${a})">
