@@ -555,6 +555,8 @@ async function submitPay() {
   const btn = document.getElementById('btn-verify');
   btn.disabled = true; btn.textContent = 'SUBMITTING...';
   PS.add({ utr, plan:S.plan, amount:S.plan, txnRef:S.txnId, uid:S.uid });
+  // ponytail: best-effort server claim; local pending remains the fallback
+  try { await PAY.call('/api/claims', { utr, plan:S.plan, uid:S.uid }); } catch(e) {}
   document.getElementById('p-utr').textContent  = utr;
   document.getElementById('p-plan').textContent = CFG.plans[S.plan].name;
   document.getElementById('p-amt').textContent  = `₹${S.plan}`;
@@ -568,6 +570,18 @@ async function submitPay() {
 
 async function checkPending() {
   const utr = document.getElementById('p-utr').textContent;
+  // ponytail: server first (auto-approve), local entry as fallback
+  try {
+    const s = await PAY.call('/api/claims/' + encodeURIComponent(utr));
+    if (s.status === 'approved' && s.token) {
+      clearInterval(S.pendingTimer);
+      PS.approve(utr, s.token, s.payload);
+      document.getElementById('p-status').textContent = 'Approved ✓';
+      document.getElementById('p-status').style.color = 'var(--green)';
+      await activateSub(s.token, s.payload);
+      return;
+    }
+  } catch(e) {}
   const entry = PS.byUTR(utr);
   if(!entry) return;
   if(entry.status === 'approved') {
