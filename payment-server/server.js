@@ -34,7 +34,9 @@ const razorpay = new Razorpay({
 });
 
 const app = express();
-app.use(cors({ origin: true }));
+// ponytail: static allowlist; env override for local dev
+const ALLOWED = (process.env.ALLOWED_ORIGIN || 'https://python-jungle-com.web.app,https://python-2bab1.web.app,http://localhost:3000').split(',');
+app.use(cors({ origin: ALLOWED }));
 app.use(express.json());
 
 // Serve config for frontend

@@ -10,3 +10,5 @@ check_*.py
 fin_check*.py
 *.tmp
 google-pay/
+payment-server/config.json
+payment-server/payments.json
