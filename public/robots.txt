@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://python-jungle-com.web.app/sitemap.xml
