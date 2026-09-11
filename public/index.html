@@ -4376,7 +4376,7 @@ function renderLearn() {
     var html = '<div class="hero"><span class="diff-badge">' + tr('landing.choosePath') + '</span>';
     html += '<h1 class="hero-title">' + tr('landing.title') + '</h1>';
     html += '<p class="hero-desc">' + tr('landing.desc') + '</p></div>';
-     html += '<div class="sub-banner"><div class="sub-banner-text">🎁 <strong>Progressive unlock</strong> — complete each chapter to unlock the next. <span onclick="showPaymentModal()" style="color:#FFD700;cursor:pointer;text-decoration:underline">₹99/₹299/₹499 plans →</span></div></div>';
+     html += '<div class="sub-banner"><div class="sub-banner-text">🎁 <strong>Progressive unlock</strong> — complete each chapter to unlock the next. <span onclick="showPaymentModal()" style="color:#FFD700;cursor:pointer;text-decoration:underline">₹1/₹299/₹499 plans →</span></div></div>';
     html += '<div class="lang-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:960px;margin:24px auto;padding:0 16px">';
     var langKeys = ['python','java','kotlin','web'];
     langKeys.forEach(function(k) {
@@ -4416,7 +4416,7 @@ function renderLearn() {
     if (langExs.length > 0) {
       html += '<button class="start-btn" onclick="navigate(\'exercise\',\'' + langExs[0].slug + '\')">🚀 Start Learning</button>';
     }
-     html += '<div class="sub-banner"><div class="sub-banner-text">🎁 <strong>Progressive unlock</strong> — complete each chapter to unlock the next. <span onclick="showPaymentModal()" style="color:#FFD700;cursor:pointer;text-decoration:underline">₹99/₹299/₹499 plans →</span></div></div>';
+     html += '<div class="sub-banner"><div class="sub-banner-text">🎁 <strong>Progressive unlock</strong> — complete each chapter to unlock the next. <span onclick="showPaymentModal()" style="color:#FFD700;cursor:pointer;text-decoration:underline">₹1/₹299/₹499 plans →</span></div></div>';
     html += '</div>';
 
     // Topics table for this language
@@ -5935,7 +5935,7 @@ html += '</div>';
    } else {
      html += '<div style="margin-top:20px;padding:16px;background:rgba(255,215,0,0.08);border:2px solid rgba(255,215,0,0.3);border-radius:10px;text-align:center">';
      html += '<h3 style="color:#FFD700;font-family:\'Press Start 2P\',monospace;font-size:12px;margin-bottom:8px">🔒 Unlock Full Course</h3>';
-      html += '<p style="color:#A8C89A;font-size:12px;margin-bottom:12px">Choose a plan — ₹99 (30%), ₹299 (60%), or ₹499 (full access).</p>';
+      html += '<p style="color:#A8C89A;font-size:12px;margin-bottom:12px">Choose a plan — ₹1 (30%), ₹299 (60%), or ₹499 (full access).</p>';
      html += '<button class="btn btn-submit" onclick="openVaultPay()" style="font-size:10px;padding:8px 16px">💳 Pay Now</button>';
      html += '<button class="btn btn-submit" onclick="confirmPayment()" style="font-size:10px;padding:8px 16px;margin-left:8px">✅ I\'ve Paid</button>';
      html += '</div>';
@@ -6539,9 +6539,9 @@ document.addEventListener('keydown', function(e) {
     <h2>🔓 Choose Your Access Plan</h2>
     <p style="color:#A8C89A;font-size:12px;margin-bottom:16px">Unlock chapters across Python, Java, Kotlin & JavaScript</p>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-      <div onclick="selectPaymentPlan(99)" style="cursor:pointer;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;transition:all .2s" onmouseover="this.style.borderColor='#FFD700';this.style.background='rgba(255,215,0,0.1)'" onmouseout="this.style.borderColor='rgba(255,215,0,0.2)';this.style.background='rgba(255,215,0,0.06)'">
+      <div onclick="selectPaymentPlan(1)" style="cursor:pointer;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;transition:all .2s" onmouseover="this.style.borderColor='#FFD700';this.style.background='rgba(255,215,0,0.1)'" onmouseout="this.style.borderColor='rgba(255,215,0,0.2)';this.style.background='rgba(255,215,0,0.06)'">
         <div><div style="color:#FFD700;font-family:'Press Start 2P',monospace;font-size:11px">🌱 Starter</div><div style="color:#A8C89A;font-size:10px;margin-top:4px">30% chapters unlocked</div></div>
-        <div style="text-align:right"><div style="color:#FFD700;font-size:20px;font-weight:700">₹99</div><div style="color:#666;font-size:9px">one-time</div></div>
+        <div style="text-align:right"><div style="color:#FFD700;font-size:20px;font-weight:700">₹1</div><div style="color:#666;font-size:9px">one-time</div></div>
       </div>
       <div onclick="selectPaymentPlan(299)" style="cursor:pointer;background:rgba(255,215,0,0.1);border:2px solid #FFD700;border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;transition:all .2s" onmouseover="this.style.borderColor='#FFD700';this.style.background='rgba(255,215,0,0.15)'" onmouseout="this.style.borderColor='#FFD700';this.style.background='rgba(255,215,0,0.1)'">
         <div><div style="color:#FFD700;font-family:'Press Start 2P',monospace;font-size:11px">🔥 Pro <span style="font-size:8px;background:#FFD700;color:#0D1B0D;padding:1px 6px;border-radius:3px;margin-left:4px">POPULAR</span></div><div style="color:#A8C89A;font-size:10px;margin-top:4px">60% chapters unlocked</div></div>
