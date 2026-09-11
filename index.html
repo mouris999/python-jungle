@@ -5866,13 +5866,13 @@ function renderProfile() {
   html += '<div style="margin-top:20px;padding:14px;background:rgba(45,143,78,0.08);border:1px solid rgba(45,143,78,0.2);border-radius:8px">';
   html += '<div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'\':\'none\'">';
   html += '<span style="color:#FFD700;font-size:13px;font-weight:600">⚙️ Piston Server (Java/Kotlin)</span>';
-  html += '<span style="color:#6ABF69;font-size:11px">' + (pistonUrl === 'http://localhost:2000' ? 'Default' : 'Custom') + '</span></div>';
-  html += '<div id="pistonSettings" style="display:' + (pistonUrl === 'http://localhost:2000' ? 'none' : '') + ';margin-top:10px">';
+  html += '<span style="color:#6ABF69;font-size:11px">' + (pistonUrl === 'https://emkc.org' ? 'Default' : 'Custom') + '</span></div>';
+  html += '<div id="pistonSettings" style="display:' + (pistonUrl === 'https://emkc.org' ? 'none' : '') + ';margin-top:10px">';
   html += '<label style="color:#A8C89A;font-size:11px;display:block;margin-bottom:4px">Server URL:</label>';
   html += '<input id="pistonUrlInput" type="text" value="' + esc(pistonUrl) + '" placeholder="http://your-server:2000" style="width:100%;padding:8px;background:#1a2a1a;border:1px solid #2D8F4E;border-radius:6px;color:#E0E0E0;font-size:12px;box-sizing:border-box" />';
   html += '<button class="btn btn-submit" onclick="var v=document.getElementById(\'pistonUrlInput\').value.trim();if(v){setPistonUrl(v);showToast(\'✅ Piston URL saved\',\'success\')}else{showToast(\'⚠️ Enter a valid URL\',\'error\')}" style="font-size:10px;padding:6px 14px;margin-top:8px">💾 Save</button>';
-  html += '<button class="btn btn-sec" onclick="document.getElementById(\'pistonUrlInput\').value=\'http://localhost:2000\';setPistonUrl(\'http://localhost:2000\');showToast(\'✅ Reset to default\',\'success\')" style="font-size:10px;padding:6px 14px;margin-top:8px;margin-left:6px">↺ Reset</button>';
-  html += '<div style="font-size:10px;color:#666;margin-top:8px">Self-hosted Piston code execution engine. Default: <code style="color:#A8C89A">http://localhost:2000</code>. <a href="https://github.com/engineer-man/piston" target="_blank" style="color:#FFD700">Setup guide →</a></div>';
+  html += '<button class="btn btn-sec" onclick="document.getElementById(\'pistonUrlInput\').value=\'https://emkc.org\';setPistonUrl(\'https://emkc.org\');showToast(\'✅ Reset to default\',\'success\')" style="font-size:10px;padding:6px 14px;margin-top:8px;margin-left:6px">↺ Reset</button>';
+  html += '<div style="font-size:10px;color:#666;margin-top:8px">Free public Piston API. Default: <code style="color:#A8C89A">https://emkc.org</code>. Self-host instead: <a href="https://github.com/engineer-man/piston" target="_blank" style="color:#FFD700">Setup guide →</a></div>';
   html += '</div></div>';
 
   // Completed chapters section
@@ -6053,7 +6053,7 @@ function getAIKey() {
   return localStorage.getItem('jungleAIKey') || aiDefaultKey;
 }
 function setAIKey(k) { localStorage.setItem('jungleAIKey', k); }
-function getPistonUrl() { return localStorage.getItem('junglePistonUrl') || 'http://localhost:2000'; }
+function getPistonUrl() { return localStorage.getItem('junglePistonUrl') || 'https://emkc.org'; }
 function setPistonUrl(u) { localStorage.setItem('junglePistonUrl', u); }
 
 function initLLM() {
