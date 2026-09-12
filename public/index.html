@@ -328,6 +328,7 @@
         </div>
         <button class="start-btn" onclick="navigate('learn')" style="margin-top:24px;font-size:16px;padding:14px 32px" data-i18n="hero.startBtn">🚀 Start Learning</button>
       </div>
+      <div id="continueHero"></div>
       <div id="landingTopics" style="padding:20px 30px;flex:1"></div>
     </div>
 
@@ -4261,6 +4262,39 @@ function resumeLesson() {
   else showToast('🎉 All exercises completed! Amazing work!', 'success');
 }
 
+// ── Continue Mission hero (additive; reuses resumeLesson/getAll/user.done, no second source of truth) ──
+function renderContinueHero() {
+  var box = document.getElementById('continueHero');
+  if (!box) return;
+  try {
+    var done = (typeof user !== 'undefined' && user && Array.isArray(user.done)) ? user.done : [];
+    var all = (typeof getAll === 'function') ? getAll() : [];
+    if (!all || !all.length) { box.innerHTML = ''; return; }
+    var inc = null;
+    for (var i = 0; i < all.length; i++) { if (done.indexOf(all[i].id) < 0) { inc = all[i]; break; } }
+    var pct = Math.min(100, Math.round(done.length / all.length * 100));
+    if (!inc) {
+      if (!done.length) { box.innerHTML = ''; return; }
+      box.innerHTML = '<div class="hero" style="padding:24px 20px;text-align:center">'
+        + '<div style="font-size:40px;margin-bottom:8px">🏆</div>'
+        + '<h2 class="hero-title" style="font-size:22px">Jungle Master!</h2>'
+        + '<p class="hero-desc">You completed all ' + all.length + ' missions. The jungle is yours.</p>'
+        + '<button class="start-btn" onclick="navigate(\'learn\')" style="margin-top:12px">📚 REVIEW LESSONS</button></div>';
+      return;
+    }
+    if (!done.length) { box.innerHTML = ''; return; }
+    var chTitle = '';
+    try { var ci = getChapterForExercise(inc.id); if (typeof CH !== 'undefined' && CH && CH[ci]) chTitle = CH[ci].title; } catch (e2) {}
+    box.innerHTML = '<div class="hero" style="padding:24px 20px;text-align:center;border:1px solid rgba(255,215,0,.35);border-radius:12px;margin:16px auto;max-width:640px">'
+      + '<div style="font-size:11px;letter-spacing:.2em;color:#FFD700;margin-bottom:8px">🧭 YOUR NEXT MISSION</div>'
+      + '<h2 class="hero-title" style="font-size:22px">' + esc(inc.title || 'Continue') + '</h2>'
+      + (chTitle ? '<p class="hero-desc" style="margin:6px 0 0">' + esc(chTitle) + '</p>' : '')
+      + '<div class="progress-bar-container" style="max-width:420px;margin:14px auto 0"><div class="progress-bar-label"><span>' + done.length + '/' + all.length + ' missions</span><span>' + pct + '%</span></div>'
+      + '<div class="progress-bar"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div></div>'
+      + '<button class="start-btn" onclick="resumeLesson()" style="margin-top:14px">CONTINUE MISSION →</button></div>';
+  } catch (e) { box.innerHTML = ''; }
+}
+
 // ============================================================
 // NAVIGATION
 // ============================================================
@@ -4283,6 +4317,7 @@ function navigate(page, extra) {
     case 'landing':
       sb.style.display = 'flex';
       ma.style.marginLeft = '0';
+      renderContinueHero();
       renderLandingTopics();
       break;
     case 'learn':
@@ -5964,6 +5999,8 @@ function updSidebar() {
   var lbl = document.getElementById('sLbl'); if (lbl) lbl.textContent = 'Level ' + user.lv;
 
   var bar = document.getElementById('miniBar'); if (bar) bar.style.width = Math.min(100, xpIn) + '%';
+
+  renderContinueHero();
 
   // Update resume button
   var inc = getAll().find(function(e) { return user.done.indexOf(e.id) < 0; });
