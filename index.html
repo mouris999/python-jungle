@@ -94,6 +94,7 @@
 /* Top nav */
 .top-nav a:hover{color:#FFD700!important;background:rgba(255,215,0,.1)}
 .top-nav a.active{color:#FFD700!important;background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.2)}
+.nav-sep{width:1px;align-self:stretch;background:rgba(45,143,78,.35);margin:2px 4px;flex:none}
 
 /* ===== MOBILE RESPONSIVE ===== */
 @media(max-width:768px){
@@ -302,13 +303,17 @@
     <!-- Top Nav Bar -->
     <div class="top-nav" style="display:flex;align-items:center;gap:4px;padding:6px 16px;background:rgba(13,27,13,.95);border-bottom:1px solid rgba(45,143,78,.2);flex-wrap:wrap">
       <a href="#" onclick="navigate('landing')" id="navHome" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace">🏠</a>
+      <span class="nav-sep"></span>
       <a href="#" onclick="navigate('learn')" id="navLearn" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.learn">📚 Learn</a>
       <a href="#" onclick="navigate('roadmap')" id="navRoadmap" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.roadmap">🗺️ Roadmap</a>
+      <span class="nav-sep"></span>
       <a href="#" onclick="navigate('practice')" id="navPractice" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.practice">🎯 Practice</a>
-      <a href="#" onclick="navigate('tasks')" id="navTasks" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.tasks">📋 Tasks</a>
       <a href="#" onclick="navigate('challenges')" id="navChallenges" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.challenges">⚔️ Challenges</a>
       <a href="#" onclick="navigate('quests')" id="navQuests" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.quests">🎮 Quests</a>
+      <a href="#" onclick="navigate('tasks')" id="navTasks" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.tasks">📋 Tasks</a>
+      <span class="nav-sep"></span>
       <a href="#" onclick="navigate('profile')" id="navProfile" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.profile">👤 Profile</a>
+      <span class="nav-sep"></span>
       <a href="#" onclick="navigate('ai')" id="navAI" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.ai">🤖 AI</a>
       <a href="#" onclick="navigate('book')" id="navBook" style="color:#A8C89A;text-decoration:none;font-size:10px;padding:4px 10px;border-radius:6px;transition:all .2s;font-family:'Press Start 2P',monospace" data-i18n="nav.book">📖 Book</a>
       <span style="flex:1"></span>
@@ -4375,7 +4380,7 @@ function navigate(page, extra) {
   }
 
   // Update active nav link
-  document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+  document.querySelectorAll('.top-nav a').forEach(function(a) { a.classList.remove('active'); });
   var navMap = { 'landing': 'navHome', 'learn': 'navLearn', 'practice': 'navPractice', 'profile': 'navProfile', 'roadmap': 'navRoadmap', 'tasks': 'navTasks', 'challenges': 'navChallenges', 'quests': 'navQuests', 'ai': 'navAI', 'book': 'navBook' };
   if (navMap[page]) {
     var el = document.getElementById(navMap[page]);
